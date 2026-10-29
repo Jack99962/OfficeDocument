@@ -24,12 +24,21 @@ import { initWebMcp } from './lib/web-mcp';
 import { createAgentEntry } from './lib/agent-entry';
 import { hasUnsavedChanges, installUnsavedChangesGuard } from './lib/unsaved-guard';
 import { initDocumentHistory } from './lib/history';
+import { listDocs } from './lib/history/store';
+import { restoreSavedDocument } from './lib/history/recovery';
+import { confirmDialog } from './lib/confirm-dialog';
+import { t } from '@ranuts/shared/i18n';
 import './styles/base.css';
 
 declare global {
   interface Window {
     onCreateNew: (ext: string) => Promise<void>;
     onOpenDocument: () => void;
+    __openLocalDocument?: () => void;
+    __listRecentDocuments?: () => Promise<
+      Array<{ id: string; title: string; ext: string; updatedAt: number; size: number }>
+    >;
+    __openRecentDocument?: (id: string) => Promise<boolean>;
     hideControlPanel?: () => void;
     showControlPanel?: () => void;
     DocsAPI: {
@@ -78,6 +87,36 @@ setEventUICallbacks({
 window.onCreateNew = onCreateNew;
 // Expose the upload flow globally so the landing hero (and other host pages) can trigger it.
 window.onOpenDocument = onOpenDocument;
+
+async function confirmDocumentReplacement(): Promise<boolean> {
+  if (!hasUnsavedChanges()) return true;
+  return confirmDialog({
+    title: t('historyOpenFile'),
+    body: t('editorReplaceUnsavedConfirm'),
+    confirmLabel: t('historyOpen'),
+    cancelLabel: t('historyCancel'),
+    danger: true,
+  });
+}
+
+// Same-origin editor frames use these narrow callbacks for the File menu.
+// Keeping IndexedDB and the file picker in the host means Word, Sheet and
+// Slide share one implementation, while the vendored frames stay untouched.
+window.__openLocalDocument = (): void => {
+  if (!hasUnsavedChanges()) {
+    onOpenDocument();
+    return;
+  }
+  void confirmDocumentReplacement().then((confirmed) => confirmed && onOpenDocument());
+};
+window.__listRecentDocuments = async () => {
+  const { items } = await listDocs({ pageSize: 12 });
+  return items.map(({ id, title, ext, updatedAt, size }) => ({ id, title, ext, updatedAt, size }));
+};
+window.__openRecentDocument = async (id: string): Promise<boolean> => {
+  if (!(await confirmDocumentReplacement())) return false;
+  return restoreSavedDocument(id);
+};
 
 // Export control panel functions for use in other modules
 window.hideControlPanel = hideControlPanel;

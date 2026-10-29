@@ -559,6 +559,7 @@ describe('onlyoffice-editor', () => {
       expect(config.editorConfig.mode).toBe('edit');
       expect(config.document.permissions.edit).toBe(true);
       expect(config.document.permissions.download).toBe(true);
+      expect(config.document.permissions.print).toBe(true);
     });
 
     it('routes PDF straight to the pdf editor (isForm:false) so the /apps/common loader is skipped', async () => {

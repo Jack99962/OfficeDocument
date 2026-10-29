@@ -17,6 +17,7 @@ import { installAboutSourceNotice } from './guards/about-source';
 import { installBadImageUrlGuard } from './guards/bad-image-url';
 import { installX2tWorkerProxy } from './guards/x2t-worker';
 import { installAssistantFocusGuard } from './guards/assistant-focus';
+import { installLocalFileMenu } from './guards/file-menu';
 
 /**
  * Same-origin preparation of the editor iframe, applied from onAppReady and
@@ -65,6 +66,7 @@ export function prepareEditorIframe(): boolean {
       // Save tracking wraps the final converter, including the worker proxy.
       const saveSemanticsInstalled = installServerlessSaveSemantics(win);
       installAboutSourceNotice(doc);
+      const localFileMenuInstalled = installLocalFileMenu(win);
       const wasmBinaryHandled = releaseWasmBinary(win);
 
       if (
@@ -75,7 +77,8 @@ export function prepareEditorIframe(): boolean {
         longActionGuarded &&
         x2tWorkerProxied &&
         wasmBinaryHandled &&
-        assistantFocusGuarded
+        assistantFocusGuarded &&
+        localFileMenuInstalled
       ) {
         fullyApplied = true;
       }

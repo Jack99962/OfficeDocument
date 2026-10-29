@@ -470,6 +470,10 @@ export const de: Partial<I18nMessages> = {
   historyDownloadFailed: 'Diese Kopie konnte nicht auf der Festplatte gespeichert werden.',
   historyOnlyUnsaved: 'Nicht exportiert',
   historyOpenFile: 'Datei öffnen',
+  editorRecentFiles: 'Zuletzt verwendet',
+  editorRecentFilesEmpty: 'In diesem Browser sind noch keine kürzlich bearbeiteten Dateien gespeichert.',
+  editorReplaceUnsavedConfirm:
+    'Beim Öffnen einer anderen Datei werden Änderungen verworfen, die noch nicht gespeichert wurden. Fortfahren?',
   historyRailSettings: 'Einstellungen',
   historyRailRetention: 'Aufbewahrung',
   historyCancel: 'Abbrechen',

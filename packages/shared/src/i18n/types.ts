@@ -441,6 +441,9 @@ export interface I18nMessages {
   /** Toolbar filter: only the documents that were never exported to disk. */
   historyOnlyUnsaved: string;
   historyOpenFile: string;
+  editorRecentFiles: string;
+  editorRecentFilesEmpty: string;
+  editorReplaceUnsavedConfirm: string;
   historyRailSettings: string;
   historyRailRetention: string;
   agentEntryPolish: string;
