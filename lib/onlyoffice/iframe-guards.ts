@@ -18,6 +18,7 @@ import { installBadImageUrlGuard } from './guards/bad-image-url';
 import { installX2tWorkerProxy } from './guards/x2t-worker';
 import { installAssistantFocusGuard } from './guards/assistant-focus';
 import { installLocalFileMenu } from './guards/file-menu';
+import { installDeferredFeatureFeedback } from './guards/deferred-feature-feedback';
 
 /**
  * Same-origin preparation of the editor iframe, applied from onAppReady and
@@ -67,6 +68,7 @@ export function prepareEditorIframe(): boolean {
       const saveSemanticsInstalled = installServerlessSaveSemantics(win);
       installAboutSourceNotice(doc);
       const localFileMenuInstalled = installLocalFileMenu(win);
+      const deferredFeatureFeedbackInstalled = installDeferredFeatureFeedback(win);
       const wasmBinaryHandled = releaseWasmBinary(win);
 
       if (
@@ -78,7 +80,8 @@ export function prepareEditorIframe(): boolean {
         x2tWorkerProxied &&
         wasmBinaryHandled &&
         assistantFocusGuarded &&
-        localFileMenuInstalled
+        localFileMenuInstalled &&
+        deferredFeatureFeedbackInstalled
       ) {
         fullyApplied = true;
       }

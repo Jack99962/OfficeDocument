@@ -39,6 +39,7 @@ declare global {
       Array<{ id: string; title: string; ext: string; updatedAt: number; size: number }>
     >;
     __openRecentDocument?: (id: string) => Promise<boolean>;
+    __notifyDeferredFeature?: () => void;
     hideControlPanel?: () => void;
     showControlPanel?: () => void;
     DocsAPI: {
@@ -116,6 +117,10 @@ window.__listRecentDocuments = async () => {
 window.__openRecentDocument = async (id: string): Promise<boolean> => {
   if (!(await confirmDocumentReplacement())) return false;
   return restoreSavedDocument(id);
+};
+window.__notifyDeferredFeature = (): void => {
+  const toast = (window as unknown as { message?: { info?: (text: string) => void } }).message;
+  if (toast?.info) toast.info(t('editorFeatureLoading'));
 };
 
 // Export control panel functions for use in other modules
@@ -304,52 +309,54 @@ if ('serviceWorker' in navigator) {
   // which waiting worker is a new build of ours.
   const ownScriptURLPromise = getAppWorkerScriptURL();
 
-  window.addEventListener('load', () => {
-    ownScriptURLPromise
-      .then((ownScriptURL) =>
-        navigator.serviceWorker.register(ownScriptURL).then((registration) => {
-          console.log('SW registered: ', registration);
-          wireServiceWorkerUpdates(registration, hasOpenDocument, ownScriptURL);
-          // Promotion above is refused while a document is open, and this page
-          // is usually opened with one (?new=, ?file=, ?saved=). Without an
-          // offer, such a visitor never leaves the build their worker cached --
-          // reloading serves it again. Ask instead of deciding for them: the
-          // reload happens on click, so the mixed-version hazard the waiting
-          // exists to prevent cannot happen either.
-          // A tab whose worker is an older build heals itself, quietly. The
-          // navigation is network-first, so this page and its bundle are already
-          // the new ones; it is the vendored tree underneath that is still being
-          // served from the outgoing build's cache, and a registry that no longer
-          // matches the origin is how a reverted build kept rendering garbled
-          // text long after the revert had shipped. Promote and reload once --
-          // at boot there is nothing typed to lose, and no one has to be told.
-          onWaitingWorker(
-            registration,
-            (waiting) => {
-              void healStaleController({
-                registration,
-                waiting,
-                ownScriptURL,
-                controller: controllerAtBoot,
-                controllerVersion: controllerVersionAtBoot,
-                hasUnsavedChanges,
-                hadController,
-                storage: window.sessionStorage,
-              });
-            },
-            ownScriptURL,
-          );
-          // Check for updates on every page load. Firefox rejects the update
-          // when the registration changed since it was scheduled (a benign race
-          // right after register()); swallow it so it never surfaces as an
-          // unhandled rejection.
-          registration.update().catch(() => {});
-        }),
-      )
-      .catch((registrationError) => {
-        console.log('SW registration failed: ', registrationError);
-      });
-  });
+  // Register immediately. The native editor lives in an iframe whose large,
+  // serial bootstrap can delay the top-level `load` event for tens of seconds.
+  // Waiting for that event left the cold-open worker idle during the exact
+  // network gap where it should be installing and caching the selected app.
+  void ownScriptURLPromise
+    .then((ownScriptURL) =>
+      navigator.serviceWorker.register(ownScriptURL).then((registration) => {
+        console.log('SW registered: ', registration);
+        wireServiceWorkerUpdates(registration, hasOpenDocument, ownScriptURL);
+        // Promotion above is refused while a document is open, and this page
+        // is usually opened with one (?new=, ?file=, ?saved=). Without an
+        // offer, such a visitor never leaves the build their worker cached --
+        // reloading serves it again. Ask instead of deciding for them: the
+        // reload happens on click, so the mixed-version hazard the waiting
+        // exists to prevent cannot happen either.
+        // A tab whose worker is an older build heals itself, quietly. The
+        // navigation is network-first, so this page and its bundle are already
+        // the new ones; it is the vendored tree underneath that is still being
+        // served from the outgoing build's cache, and a registry that no longer
+        // matches the origin is how a reverted build kept rendering garbled
+        // text long after the revert had shipped. Promote and reload once --
+        // at boot there is nothing typed to lose, and no one has to be told.
+        onWaitingWorker(
+          registration,
+          (waiting) => {
+            void healStaleController({
+              registration,
+              waiting,
+              ownScriptURL,
+              controller: controllerAtBoot,
+              controllerVersion: controllerVersionAtBoot,
+              hasUnsavedChanges,
+              hadController,
+              storage: window.sessionStorage,
+            });
+          },
+          ownScriptURL,
+        );
+        // Check for updates on every page load. Firefox rejects the update
+        // when the registration changed since it was scheduled (a benign race
+        // right after register()); swallow it so it never surfaces as an
+        // unhandled rejection.
+        registration.update().catch(() => {});
+      }),
+    )
+    .catch((registrationError) => {
+      console.log('SW registration failed: ', registrationError);
+    });
 }
 
 // Initialize PWA install component — built with the ranui builder (ecosystem

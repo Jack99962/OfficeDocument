@@ -444,6 +444,7 @@ export interface I18nMessages {
   editorRecentFiles: string;
   editorRecentFilesEmpty: string;
   editorReplaceUnsavedConfirm: string;
+  editorFeatureLoading: string;
   historyRailSettings: string;
   historyRailRetention: string;
   agentEntryPolish: string;

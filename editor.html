@@ -32,6 +32,36 @@
         }
       } catch (e) {}
     </script>
+    <script>
+      // The vendor frame discovers its large SDK/app/code bundles serially.
+      // Start the selected editor's next phases while our small host bundle is
+      // parsing so PPT/Excel do not leave the network idle for several seconds.
+      // These are core editing resources only; export/print conversion remains
+      // deferred until requested.
+      try {
+        var ext = new URLSearchParams(location.search).get('new');
+        var editor =
+          ext === 'xlsx'
+            ? 'spreadsheeteditor'
+            : ext === 'pptx'
+              ? 'presentationeditor'
+              : ext === 'docx'
+                ? 'documenteditor'
+                : '';
+        var sdk = ext === 'xlsx' ? 'cell' : ext === 'pptx' ? 'slide' : ext === 'docx' ? 'word' : '';
+        if (editor && sdk) {
+          [
+            '/web-apps/apps/' + editor + '/main/app.js',
+            '/sdkjs/' + sdk + '/sdk-all-min.js',
+            '/web-apps/apps/' + editor + '/main/code.js',
+            '/sdkjs/common/AllFonts.js',
+            '/web-apps/apps/' + editor + '/main/locale/zh.json',
+          ].forEach(function (url) {
+            fetch(url, { cache: 'force-cache', priority: 'high' }).catch(function () {});
+          });
+        }
+      } catch (e) {}
+    </script>
     <!-- ranui design-token layer (vendored from ranui/dist/ranui.css, re-synced by bin/build.sh).
          Loaded before home.css so the landing hero's --ran-* tokens resolve on first paint. -->
     <script src="/theme-presentation.js"></script>

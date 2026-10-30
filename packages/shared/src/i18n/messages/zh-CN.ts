@@ -426,6 +426,7 @@ export const zhCN: I18nMessages = {
   editorRecentFiles: '最近打开',
   editorRecentFilesEmpty: '此浏览器还没有保存最近编辑的文件。',
   editorReplaceUnsavedConfirm: '打开其他文件会放弃尚未保存到电脑的更改。是否继续？',
+  editorFeatureLoading: '该功能正在首次加载，请稍候。加载完成后即可正常使用。',
   historyRailSettings: '设置',
   historyRailRetention: '保留规则',
   historyExpiresIn: '剩 {days} 天',

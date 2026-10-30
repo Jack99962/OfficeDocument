@@ -127,6 +127,13 @@ function notifyOperationFailed(error: unknown): void {
   );
 }
 
+function notifyDeferredExport(): void {
+  const frame = document.querySelector<HTMLIFrameElement>('iframe[name="frameEditor"]')?.contentWindow;
+  const x2t = (frame as (Window & { AscCommon?: { x2t?: unknown } }) | null)?.AscCommon?.x2t;
+  if (x2t) return;
+  (window as unknown as { message?: { info?: (msg: string) => void } }).message?.info?.(t('editorFeatureLoading'));
+}
+
 // ---- v9 file-stream save channel (OnlyOffice Personal vendor build) ----
 //
 // The vendored sdkjs/web-apps build performs every export inside the editor
@@ -424,6 +431,8 @@ export function requestSaveDocument(
   if (embeddedSaveRequest) {
     return Promise.reject(new Error('A save request is already in progress'));
   }
+
+  notifyDeferredExport();
 
   const source = getDocmentObj();
   const editor = window.editor;

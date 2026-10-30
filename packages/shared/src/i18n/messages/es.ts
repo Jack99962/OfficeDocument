@@ -461,6 +461,7 @@ export const es: Partial<I18nMessages> = {
   editorRecentFilesEmpty: 'Todavía no hay archivos editados recientemente guardados en este navegador.',
   editorReplaceUnsavedConfirm:
     'Al abrir otro archivo se descartarán los cambios que aún no se hayan guardado en el disco. ¿Continuar?',
+  editorFeatureLoading: 'Esta función se está cargando por primera vez. Estará disponible en breve.',
   historyRailSettings: 'Ajustes',
   historyRailRetention: 'Conservación',
   historyCancel: 'Cancelar',

@@ -454,6 +454,7 @@ export const en: I18nMessages = {
   editorRecentFiles: 'Recent files',
   editorRecentFilesEmpty: 'No recently edited files are stored in this browser yet.',
   editorReplaceUnsavedConfirm: 'Opening another file will discard changes that have not been saved to disk. Continue?',
+  editorFeatureLoading: 'This feature is loading for first use. It will be available shortly.',
   historyRailSettings: 'Settings',
   historyRailRetention: 'Retention',
   agentEntryPolish: 'Polish selection',

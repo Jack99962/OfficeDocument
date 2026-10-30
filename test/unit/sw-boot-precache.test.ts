@@ -79,7 +79,7 @@ it('caches vendor bootstrap script and style tags without evaluating inline scri
   ]);
 });
 
-it('installs native export runtime before the editor is used offline', async () => {
+it('keeps optional editors and export runtime off the cold-install path', async () => {
   const listeners = new Map<string, (event: any) => void>();
   // Per cache name: the network-first offline fallback only reads the core cache.
   const stored = new Map<string, Set<string>>();
@@ -114,9 +114,7 @@ it('installs native export runtime before the editor is used offline', async () 
     new Set([...stored].filter(([name]) => name.startsWith(prefix)).flatMap(([, urls]) => [...urls]));
   const runtime = cached('document-editor-runtime-');
   const core = cached('document-editor-core-');
-  expect(runtime.has('/sdkjs/common/wasm/x2t/x2t.js')).toBe(true);
-  expect(runtime.has('/sdkjs/common/wasm/x2t/x2t.wasm.br')).toBe(true);
-  expect(runtime.has('/sdkjs/common/wasm/x2t/x2t.worker.js')).toBe(true);
+  expect(runtime).toEqual(new Set(['/web-apps/apps/api/documents/api.js']));
   // Not vendor assets: activation prunes them from the runtime cache, so their
   // offline copies belong to this build's core.
   expect(core.has('/libs/sheetjs/convert.worker.js')).toBe(true);
@@ -148,7 +146,7 @@ it('precaches local file-open controls from the offline homepage', async () => {
   expect(stored.has('https://editor.example/private/unsupported.js')).toBe(false);
 });
 
-it('installs font menu sprites before their first offline use at any locale or density', async () => {
+it('defers font menu sprites until the selected editor requests them', async () => {
   const listeners = new Map<string, (event: any) => void>();
   const stored = new Set<string>();
   const cache = {
@@ -178,7 +176,7 @@ it('installs font menu sprites before their first offline use at any locale or d
   await installed;
   for (const locale of ['', '_ea']) {
     for (const density of ['', '@1.25x', '@1.5x', '@1.75x', '@2x']) {
-      expect(stored.has(`/sdkjs/common/Images/fonts_thumbnail${locale}${density}.png.bin`)).toBe(true);
+      expect(stored.has(`/sdkjs/common/Images/fonts_thumbnail${locale}${density}.png.bin`)).toBe(false);
     }
   }
   expect([...stored].some((url) => url.startsWith('/fonts/'))).toBe(false);

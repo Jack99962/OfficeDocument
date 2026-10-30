@@ -439,6 +439,7 @@ export const ko: Partial<I18nMessages> = {
   editorRecentFiles: '최근 파일',
   editorRecentFilesEmpty: '이 브라우저에는 최근 편집한 파일이 아직 저장되어 있지 않습니다.',
   editorReplaceUnsavedConfirm: '다른 파일을 열면 디스크에 저장하지 않은 변경 내용이 삭제됩니다. 계속하시겠습니까?',
+  editorFeatureLoading: '이 기능을 처음 불러오는 중입니다. 잠시만 기다려 주세요.',
   historyRailSettings: '설정',
   historyRailRetention: '보관 기간',
   historyCancel: '취소',

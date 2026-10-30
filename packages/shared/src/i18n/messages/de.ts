@@ -474,6 +474,7 @@ export const de: Partial<I18nMessages> = {
   editorRecentFilesEmpty: 'In diesem Browser sind noch keine kürzlich bearbeiteten Dateien gespeichert.',
   editorReplaceUnsavedConfirm:
     'Beim Öffnen einer anderen Datei werden Änderungen verworfen, die noch nicht gespeichert wurden. Fortfahren?',
+  editorFeatureLoading: 'Diese Funktion wird für die erste Verwendung geladen. Sie ist gleich verfügbar.',
   historyRailSettings: 'Einstellungen',
   historyRailRetention: 'Aufbewahrung',
   historyCancel: 'Abbrechen',

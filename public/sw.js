@@ -91,6 +91,7 @@ const isVendorAsset = (request) => VENDOR_ASSET.test(new URL(request.url).pathna
 // Everything else this scope serves is a landing or content page, which holds
 // no session an activation could spoil.
 const EDITOR_ROUTE = /^\/editor(?:\.html)?\/?$/;
+const PRODUCT_EDITOR_HOST = /^(?:word|excel|ppt)\.whogogo\.com$/;
 const isEditorWindow = (url) => {
   try {
     return EDITOR_ROUTE.test(new URL(url).pathname);
@@ -242,35 +243,15 @@ async function precacheBootAssets(cache, vendor = false) {
 self.addEventListener('install', (event) => {
   event.waitUntil(
     Promise.all([
-      // This entry is requested before the app can register its first worker.
+      // Keep installation deliberately small. The editor page waits for this
+      // worker to control it before mounting DocsAPI, so anything listed here
+      // is on the cold-open critical path. Older builds cached all three editor
+      // applications, every shipped locale, font-menu sprites and x2t before a
+      // single Word/Sheet/Slide session could start. Load the selected editor
+      // on demand instead; cache-first routing below retains every response for
+      // repeat opens. Export/print fetch x2t on first use.
       caches.open(RUNTIME_CACHE).then(async (cache) => {
-        await cache.addAll([
-          '/web-apps/apps/api/documents/api.js',
-          '/sdkjs/common/AllFonts.js',
-          // Font menus load these lazily, including when reopening a saved file.
-          // Cache every locale/density variant so first use also works offline.
-          ...['', '_ea'].flatMap((locale) =>
-            ['', '@1.25x', '@1.5x', '@1.75x', '@2x'].map(
-              (density) => `/sdkjs/common/Images/fonts_thumbnail${locale}${density}.png.bin`,
-            ),
-          ),
-          '/web-apps/vendor/xregexp/xregexp-all-min.js',
-          '/web-apps/vendor/socketio/socket.io.min.js',
-          '/sdkjs/common/wasm/x2t/x2t_helper.js',
-          // Export must work on the first offline save, before conversion has run.
-          '/sdkjs/common/wasm/x2t/x2t.js',
-          '/sdkjs/common/wasm/x2t/x2t.wasm.br',
-          '/sdkjs/common/wasm/x2t/x2t.worker.js',
-          ...EDITOR_BOOTSTRAP_HTML,
-          ...EDITOR_BOOTSTRAP_HTML.map((path) => path.replace('/index.html', '/app.js')),
-          ...EDITOR_BOOTSTRAP_HTML.map((path) => path.replace('/index.html', '/code.js')),
-          ...EDITOR_BOOTSTRAP_HTML.flatMap((path) =>
-            ['en', 'de', 'es', 'pt', 'ja', 'ko', 'zh'].map((language) =>
-              path.replace('/index.html', `/locale/${language}.json`),
-            ),
-          ),
-        ]);
-        await precacheBootAssets(cache, true);
+        await cache.addAll(['/web-apps/apps/api/documents/api.js']);
       }),
       caches.open(CORE_CACHE).then(async (cache) => {
         await cache.addAll([...ASSETS_TO_CACHE, ...APP_ASSETS_TO_CACHE]);
@@ -554,6 +535,13 @@ self.addEventListener('fetch', (event) => {
 
   // API responses are never offline assets.
   if (url.pathname.startsWith('/api/')) return;
+
+  // Each product subdomain maps `/` to its editor through a Cloudflare Pages
+  // 302. A service-worker fetch follows that redirect internally; returning
+  // the followed response for a navigation either produces Chrome ERR_FAILED
+  // or loses the final URL/query and loops at `/`. Let the browser process the
+  // redirect natively so the address becomes /editor?new=docx|xlsx|pptx.
+  if (event.request.mode === 'navigate' && url.pathname === '/' && PRODUCT_EDITOR_HOST.test(url.hostname)) return;
 
   // Match Pages' canonical route offline too. Otherwise the cached root shell
   // would resolve its relative assets under /editor/ and render a blank page.

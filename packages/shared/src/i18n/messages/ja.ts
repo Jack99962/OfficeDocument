@@ -451,6 +451,7 @@ export const ja: Partial<I18nMessages> = {
   editorRecentFiles: '最近使ったファイル',
   editorRecentFilesEmpty: 'このブラウザーには最近編集したファイルがまだ保存されていません。',
   editorReplaceUnsavedConfirm: '別のファイルを開くと、ディスクに保存されていない変更は破棄されます。続行しますか？',
+  editorFeatureLoading: 'この機能を初回読み込み中です。しばらくお待ちください。',
   historyRailSettings: '設定',
   historyRailRetention: '保存期間',
   historyCancel: 'キャンセル',
