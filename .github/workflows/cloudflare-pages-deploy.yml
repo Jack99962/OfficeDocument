@@ -43,14 +43,6 @@ jobs:
       - name: Build production assets
         run: pnpm run build
 
-      - name: Deploy shared document site
-        uses: cloudflare/wrangler-action@v4
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          command: pages deploy dist --project-name=office-document --branch=main --commit-dirty=false
-
       - name: Make Word the root tool
         shell: bash
         run: |
