@@ -57,7 +57,9 @@ describe('local editor File menu', () => {
     (window as Window & { __listRecentDocuments?: () => Promise<unknown> }).__listRecentDocuments = async () => [];
     installLocalFileMenu(window);
     (document.querySelector('#file-menu-local-recent a') as HTMLAnchorElement).click();
-    await vi.waitFor(() => expect((document.querySelector('#panel-local-recent') as HTMLElement).style.display).toBe('block'));
+    await vi.waitFor(() =>
+      expect((document.querySelector('#panel-local-recent') as HTMLElement).style.display).toBe('block'),
+    );
 
     (document.querySelector('#print a') as HTMLAnchorElement).click();
     expect((document.querySelector('#panel-local-recent') as HTMLElement).style.display).toBe('none');

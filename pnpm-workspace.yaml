@@ -4,6 +4,8 @@ minimumReleaseAgeExclude:
   - ranui
   - ranuts
   - '@alixex/ranview@0.2.2'
+  - miniflare@5.20261023.3-beta
+  - wrangler@4.156.0
 patchedDependencies:
   '@mlc-ai/web-llm@0.2.85': patches/@mlc-ai__web-llm@0.2.85.patch
   '@wllama/wllama@3.6.1': patches/@wllama__wllama@3.6.1.patch
@@ -14,3 +16,6 @@ overrides:
   katex: 0.18.2
   source-map-js: 1.2.2
   undici: 8.10.2
+allowBuilds:
+  esbuild: true
+  workerd: true

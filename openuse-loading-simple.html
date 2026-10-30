@@ -1,49 +1,159 @@
 <!doctype html>
 <html lang="zh-CN">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>OpenUse · 加载中</title>
-<style>
-:root{color-scheme:light;--blue:#3478f6;--text:#1e293b;--muted:#94a3b8}
-*{box-sizing:border-box}
-body{margin:0;font-family:Inter,-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:#fff}
-.openuse-loading{position:fixed;inset:0;z-index:99999;display:flex;justify-content:center;align-items:center;background:#fff;transition:opacity .35s,visibility .35s}
-.openuse-loading.is-hidden{opacity:0;visibility:hidden;pointer-events:none}
-.loading-content{text-align:center;padding:24px;width:100%;max-width:420px}
-.logo{display:flex;justify-content:center;align-items:flex-end;height:62px;gap:1px;margin-bottom:25px}
-.logo span{display:inline-block;color:var(--text);font-size:48px;font-weight:750;letter-spacing:-2px;line-height:1.2;animation:jump 1.6s ease-in-out infinite;animation-delay:calc(var(--i)*.105s)}
-.logo span:nth-child(n+5){color:var(--blue)}
-@keyframes jump{0%,42%,100%{transform:translateY(0)}18%{transform:translateY(-10px)}30%{transform:translateY(1px)}}
-.message{font-size:15px;font-weight:500;color:#475569;line-height:1.7;margin:0 0 9px}
-.hint{font-size:13px;line-height:1.7;color:var(--muted);margin:0}
-.link{display:inline-block;margin-top:25px;color:var(--blue);font-size:13px;text-decoration:none}
-.link:hover{text-decoration:underline}
-@media(prefers-reduced-motion:reduce){.logo span{animation:none}}
-</style>
-</head>
-<body>
-<div class="openuse-loading" id="openuse-loading" role="status" aria-label="工具正在加载">
- <div class="loading-content">
-  <div class="logo" aria-label="OpenUse"><span style="--i:0">O</span><span style="--i:1">p</span><span style="--i:2">e</span><span style="--i:3">n</span><span style="--i:4">U</span><span style="--i:5">s</span><span style="--i:6">e</span></div>
-  <p class="message" id="openuse-message">正在打开工具，请稍候…</p>
-  <p class="hint" id="openuse-hint">首次加载可能需要约 30 秒，之后通常更快</p>
-  <a class="link" href="https://whogogo.com" target="_blank" rel="noopener noreferrer">探索 OpenUse 更多在线工具 ↗</a>
- </div>
-</div>
-<script>
-(function(){
- const overlay=document.getElementById('openuse-loading');
- const message=document.getElementById('openuse-message');
- const hint=document.getElementById('openuse-hint');
- const timer=setTimeout(()=>{if(!overlay.classList.contains('is-hidden')){message.textContent='还在努力加载中…';hint.textContent='网络较慢时可能需要多一点时间';}},30000);
- window.OpenUseLoading={
-  hide(){clearTimeout(timer);overlay.classList.add('is-hidden');setTimeout(()=>overlay.remove(),400)},
-  show(){overlay.classList.remove('is-hidden')},
-  setMessage(title,description){message.textContent=title;hint.textContent=description}
- };
- // 在编辑器实际 ready 时调用 window.OpenUseLoading.hide()
-})();
-</script>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>OpenUse · 加载中</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --blue: #3478f6;
+        --text: #1e293b;
+        --muted: #94a3b8;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family:
+          Inter,
+          -apple-system,
+          BlinkMacSystemFont,
+          'PingFang SC',
+          'Microsoft YaHei',
+          sans-serif;
+        background: #fff;
+      }
+      .openuse-loading {
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #fff;
+        transition:
+          opacity 0.35s,
+          visibility 0.35s;
+      }
+      .openuse-loading.is-hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+      .loading-content {
+        text-align: center;
+        padding: 24px;
+        width: 100%;
+        max-width: 420px;
+      }
+      .logo {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        height: 62px;
+        gap: 1px;
+        margin-bottom: 25px;
+      }
+      .logo span {
+        display: inline-block;
+        color: var(--text);
+        font-size: 48px;
+        font-weight: 750;
+        letter-spacing: -2px;
+        line-height: 1.2;
+        animation: jump 1.6s ease-in-out infinite;
+        animation-delay: calc(var(--i) * 0.105s);
+      }
+      .logo span:nth-child(n + 5) {
+        color: var(--blue);
+      }
+      @keyframes jump {
+        0%,
+        42%,
+        100% {
+          transform: translateY(0);
+        }
+        18% {
+          transform: translateY(-10px);
+        }
+        30% {
+          transform: translateY(1px);
+        }
+      }
+      .message {
+        font-size: 15px;
+        font-weight: 500;
+        color: #475569;
+        line-height: 1.7;
+        margin: 0 0 9px;
+      }
+      .hint {
+        font-size: 13px;
+        line-height: 1.7;
+        color: var(--muted);
+        margin: 0;
+      }
+      .link {
+        display: inline-block;
+        margin-top: 25px;
+        color: var(--blue);
+        font-size: 13px;
+        text-decoration: none;
+      }
+      .link:hover {
+        text-decoration: underline;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .logo span {
+          animation: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="openuse-loading" id="openuse-loading" role="status" aria-label="工具正在加载">
+      <div class="loading-content">
+        <div class="logo" aria-label="OpenUse">
+          <span style="--i: 0">O</span><span style="--i: 1">p</span><span style="--i: 2">e</span
+          ><span style="--i: 3">n</span><span style="--i: 4">U</span><span style="--i: 5">s</span
+          ><span style="--i: 6">e</span>
+        </div>
+        <p class="message" id="openuse-message">正在打开工具，请稍候…</p>
+        <p class="hint" id="openuse-hint">首次加载可能需要约 30 秒，之后通常更快</p>
+        <a class="link" href="https://whogogo.com" target="_blank" rel="noopener noreferrer"
+          >探索 OpenUse 更多在线工具 ↗</a
+        >
+      </div>
+    </div>
+    <script>
+      (function () {
+        const overlay = document.getElementById('openuse-loading');
+        const message = document.getElementById('openuse-message');
+        const hint = document.getElementById('openuse-hint');
+        const timer = setTimeout(() => {
+          if (!overlay.classList.contains('is-hidden')) {
+            message.textContent = '还在努力加载中…';
+            hint.textContent = '网络较慢时可能需要多一点时间';
+          }
+        }, 30000);
+        window.OpenUseLoading = {
+          hide() {
+            clearTimeout(timer);
+            overlay.classList.add('is-hidden');
+            setTimeout(() => overlay.remove(), 400);
+          },
+          show() {
+            overlay.classList.remove('is-hidden');
+          },
+          setMessage(title, description) {
+            message.textContent = title;
+            hint.textContent = description;
+          },
+        };
+        // 在编辑器实际 ready 时调用 window.OpenUseLoading.hide()
+      })();
+    </script>
+  </body>
 </html>
