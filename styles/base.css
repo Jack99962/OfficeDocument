@@ -127,23 +127,93 @@ body.landing-active #app {
   }
 }
 
-/* Full-screen loading overlay (lib/loading.ts). gray-alpha rides the token
-   ladder, so the scrim stays a contrast veil in both themes. */
+/* Full-screen OpenUse loading overlay shared by Word, Excel, PowerPoint and PDF. */
 .loading-mask {
   position: fixed;
   inset: 0;
-  z-index: 10000;
+  z-index: 99999;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--ran-gray-alpha-500);
-  backdrop-filter: blur(2px);
+  background: #fff;
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity 0.35s,
+    visibility 0.35s;
 }
-.loading-mask r-loading {
-  /* Monochrome, per ranui's design standard: blue is reserved for links and the focus
-     ring; a loading indicator is neither. --ran-color-primary flips with the theme. */
-  color: var(--ran-color-primary);
-  font-size: var(--ran-text-heading-2);
+.loading-mask.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.loading-content {
+  width: 100%;
+  max-width: 420px;
+  padding: 24px;
+  text-align: center;
+}
+.loading-logo {
+  display: flex;
+  height: 62px;
+  margin-bottom: 25px;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 1px;
+}
+.loading-logo span {
+  display: inline-block;
+  color: #1e293b;
+  font-size: 48px;
+  font-weight: 750;
+  letter-spacing: -2px;
+  line-height: 1.2;
+  animation: openuse-loading-jump 1.6s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.105s);
+}
+.loading-logo span:nth-child(n + 5) {
+  color: #3478f6;
+}
+@keyframes openuse-loading-jump {
+  0%,
+  42%,
+  100% {
+    transform: translateY(0);
+  }
+  18% {
+    transform: translateY(-10px);
+  }
+  30% {
+    transform: translateY(1px);
+  }
+}
+.loading-message {
+  margin: 0 0 9px;
+  color: #475569;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.7;
+}
+.loading-hint {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.loading-link {
+  display: inline-block;
+  margin-top: 25px;
+  color: #3478f6;
+  font-size: 13px;
+  text-decoration: none;
+}
+.loading-link:hover {
+  text-decoration: underline;
+}
+@media (prefers-reduced-motion: reduce) {
+  .loading-logo span {
+    animation: none;
+  }
 }
 
 /* Control Panel */

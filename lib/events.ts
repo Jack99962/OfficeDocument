@@ -60,6 +60,7 @@ export const events: Record<string, MessageHandler<any, unknown>> = {
           await clearActiveSource();
         }
       } catch (error) {
+        removeLoading(true);
         if (opening.isCurrent()) console.error('Error rendering office document:', error);
       } finally {
         // Always remove loading, even if there's an error

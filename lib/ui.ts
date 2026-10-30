@@ -1,7 +1,6 @@
 import { Div, View } from 'ranui/builder';
 import { prefetchOnIntent, type EditorKind } from './prefetch';
 import { t } from '@ranuts/shared/i18n';
-import { showLoading } from './loading';
 import { onCreateNew, onOpenDocument } from './document';
 
 // Landing hero visibility. The hero (#landing-hero) lives in the served HTML for
@@ -103,14 +102,11 @@ function buildControlPanel(): HTMLElement {
   const newDocButton = (id: string, label: string, kind: EditorKind): HTMLElement => {
     const button = createTextButton(id, label, async () => {
       hideControlPanel();
-      const { removeLoading } = showLoading();
       try {
         await onCreateNew(`.${kind}`);
       } catch (error) {
         console.error(`Error creating new document (.${kind}):`, error);
         showControlPanel();
-      } finally {
-        removeLoading();
       }
     });
     // Hovering a New entry is intent: start pulling that engine now. This used

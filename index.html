@@ -20,6 +20,18 @@
           var framed = window.parent !== window;
           if (deep || framed) {
             location.replace('/editor' + (q || (framed ? '?embed=1' : '')) + location.hash);
+            return;
+          }
+          // Product subdomains are direct tool entrances, not landing pages.
+          // Keep this client-side fallback even though Cloudflare also redirects
+          // them at the edge, so a future generic deployment cannot regress them.
+          var tool = {
+            'word.whogogo.com': 'docx',
+            'excel.whogogo.com': 'xlsx',
+            'ppt.whogogo.com': 'pptx',
+          }[location.hostname.toLowerCase()];
+          if (tool && location.pathname === '/') {
+            location.replace('/editor?locale=zh-CN&new=' + tool + location.hash);
           }
         } catch (e) {}
       })();

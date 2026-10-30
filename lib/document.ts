@@ -42,8 +42,7 @@ document.body.appendChild(fileInput);
 export const onCreateNew = async (ext: string, options?: { docId?: string }): Promise<void> => {
   const opening = beginDocumentOpen();
   const operation = opening.id;
-  // Callers own the loading indicator (the control panel shows it around this
-  // call), so showing one here too would stack two of them.
+  const { removeLoading } = showLoading();
   try {
     if (hideControlPanelFn) {
       hideControlPanelFn();
@@ -61,6 +60,7 @@ export const onCreateNew = async (ext: string, options?: { docId?: string }): Pr
     // to lose: there is no file on disk to fall back to at all.
     startDocumentSession({ title: fileName, origin: 'new', docId: options?.docId });
   } catch (error) {
+    removeLoading(true);
     if (!opening.isCurrent()) throw error;
     console.error('Error creating new document:', error);
     // Ensure control panel is shown on error
@@ -68,6 +68,8 @@ export const onCreateNew = async (ext: string, options?: { docId?: string }): Pr
       showControlPanelFn();
     }
     throw error; // Re-throw so the caller can restore its own UI
+  } finally {
+    removeLoading();
   }
 };
 
@@ -110,6 +112,7 @@ export const openLocalFile = async (
     if (!isMountedDocumentOpen(operation)) throw new DOMException('Document open superseded', 'AbortError');
     startDocumentSession({ title: file.name, origin: 'local', docId });
   } catch (error) {
+    removeLoading(true);
     if (!opening.isCurrent()) throw error;
     console.error('Error opening document:', error);
     // Ensure control panel is shown on error
@@ -225,6 +228,7 @@ export const openDocumentFromUrl = async (
     if (!isMountedDocumentOpen(operation)) throw new DOMException('Document open superseded', 'AbortError');
     startDocumentSession({ title: finalFileName, origin: 'url', docId: options?.docId });
   } catch (error) {
+    removeLoading(true);
     if (!opening.isCurrent() || (error as { name?: string })?.name === 'AbortError') throw error;
     console.error('Error opening document from URL:', error);
     reportUrlOpenFailure(error);

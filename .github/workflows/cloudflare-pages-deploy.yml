@@ -1,0 +1,91 @@
+name: Deploy Cloudflare Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  deployments: write
+
+# Deploy every pushed commit completely. Cancelling halfway through could leave
+# Word, Excel and PowerPoint on different versions.
+concurrency:
+  group: cloudflare-pages-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build and deploy all editors
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Check Cloudflare credentials
+        shell: bash
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [[ -z "$CLOUDFLARE_API_TOKEN" || -z "$CLOUDFLARE_ACCOUNT_ID" ]]; then
+            echo 'Add CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID to the repository Actions secrets.' >&2
+            exit 1
+          fi
+
+      - name: Set up the toolchain
+        uses: ./.github/actions/setup
+
+      - name: Build production assets
+        run: pnpm run build
+
+      - name: Deploy shared document site
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          command: pages deploy dist --project-name=office-document --branch=main --commit-dirty=false
+
+      - name: Make Word the root tool
+        shell: bash
+        run: |
+          { printf '%s\n\n' '/ /editor?locale=zh-CN&new=docx 302'; cat public/_redirects; } > dist/_redirects
+
+      - name: Deploy Word
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          command: pages deploy dist --project-name=office-word --branch=main --commit-dirty=false
+
+      - name: Make Excel the root tool
+        shell: bash
+        run: |
+          { printf '%s\n\n' '/ /editor?locale=zh-CN&new=xlsx 302'; cat public/_redirects; } > dist/_redirects
+
+      - name: Deploy Excel
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          command: pages deploy dist --project-name=office-excel --branch=main --commit-dirty=false
+
+      - name: Make PowerPoint the root tool
+        shell: bash
+        run: |
+          { printf '%s\n\n' '/ /editor?locale=zh-CN&new=pptx 302'; cat public/_redirects; } > dist/_redirects
+
+      - name: Deploy PowerPoint
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          command: pages deploy dist --project-name=office-ppt --branch=main --commit-dirty=false

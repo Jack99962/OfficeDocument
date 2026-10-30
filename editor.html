@@ -68,6 +68,103 @@
     <link rel="stylesheet" href="/ran-fonts/fonts.css" />
     <link rel="stylesheet" href="/ran-tokens.css" />
     <link rel="stylesheet" href="/app-tokens.css" />
+    <!-- Critical loading styles are inline so the animation is visible on the
+         very first paint, before the TypeScript bundle and editor CSS arrive. -->
+    <style>
+      #openuse-loading {
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+        color-scheme: light;
+        font-family:
+          Inter,
+          -apple-system,
+          BlinkMacSystemFont,
+          'PingFang SC',
+          'Microsoft YaHei',
+          sans-serif;
+        transition:
+          opacity 0.35s,
+          visibility 0.35s;
+      }
+      #openuse-loading.is-hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+      #openuse-loading .loading-content {
+        width: 100%;
+        max-width: 420px;
+        padding: 24px;
+        text-align: center;
+      }
+      #openuse-loading .loading-logo {
+        display: flex;
+        height: 62px;
+        margin-bottom: 25px;
+        align-items: flex-end;
+        justify-content: center;
+        gap: 1px;
+      }
+      #openuse-loading .loading-logo span {
+        display: inline-block;
+        color: #1e293b;
+        font-size: 48px;
+        font-weight: 750;
+        letter-spacing: -2px;
+        line-height: 1.2;
+        animation: openuse-loading-jump 1.6s ease-in-out infinite;
+        animation-delay: calc(var(--i) * 0.105s);
+      }
+      #openuse-loading .loading-logo span:nth-child(n + 5) {
+        color: #3478f6;
+      }
+      @keyframes openuse-loading-jump {
+        0%,
+        42%,
+        100% {
+          transform: translateY(0);
+        }
+        18% {
+          transform: translateY(-10px);
+        }
+        30% {
+          transform: translateY(1px);
+        }
+      }
+      #openuse-loading .loading-message {
+        margin: 0 0 9px;
+        color: #475569;
+        font-size: 15px;
+        font-weight: 500;
+        line-height: 1.7;
+      }
+      #openuse-loading .loading-hint {
+        margin: 0;
+        color: #94a3b8;
+        font-size: 13px;
+        line-height: 1.7;
+      }
+      #openuse-loading .loading-link {
+        display: inline-block;
+        margin-top: 25px;
+        color: #3478f6;
+        font-size: 13px;
+        text-decoration: none;
+      }
+      #openuse-loading .loading-link:hover {
+        text-decoration: underline;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #openuse-loading .loading-logo span {
+          animation: none;
+        }
+      }
+    </style>
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Online Document Editor" />
     <meta property="og:locale" content="en_US" />
@@ -99,6 +196,20 @@
   </head>
 
   <body>
+    <div id="openuse-loading" class="loading-mask" role="status" aria-label="工具正在加载">
+      <div class="loading-content">
+        <div class="loading-logo" aria-label="OpenUse">
+          <span style="--i: 0">O</span><span style="--i: 1">p</span><span style="--i: 2">e</span
+          ><span style="--i: 3">n</span><span style="--i: 4">U</span><span style="--i: 5">s</span
+          ><span style="--i: 6">e</span>
+        </div>
+        <p class="loading-message">正在打开工具，请稍候…</p>
+        <p class="loading-hint">首次加载可能需要约 30 秒，之后通常更快</p>
+        <a class="loading-link" href="https://whogogo.com" target="_blank" rel="noopener noreferrer"
+          >探索更多在线工具 ↗</a
+        >
+      </div>
+    </div>
     <div id="app">
       <div id="iframe"></div>
     </div>
