@@ -10,8 +10,8 @@
   <a href="https://github.com/ranuts/document/releases">
     <img src="https://img.shields.io/github/v/release/ranuts/document" alt="Version">
   </a>
-  <a href="https://edit.chaxus.com/">
-    <img src="https://img.shields.io/badge/Live-edit.chaxus.com-brightgreen" alt="Live site">
+  <a href="https://word.whogogo.com/">
+    <img src="https://img.shields.io/badge/Live-word.whogogo.com-brightgreen" alt="Live site">
   </a>
 </p>
 
@@ -32,7 +32,7 @@ Open, edit, convert and save Word, Excel and PowerPoint files, and annotate PDFs
 
 Use optional AI assistance (Experimental Beta), let browser agents call document tools through WebMCP, or install it as a PWA. Cached editor resources work offline; you can also self-host or embed the editor in your app.
 
-**Try it online: [edit.chaxus.com](https://edit.chaxus.com/)**
+**Try it online: [word.whogogo.com](https://word.whogogo.com/)**
 
 ---
 
@@ -47,7 +47,7 @@ Use optional AI assistance (Experimental Beta), let browser agents call document
 
 ## 🚀 Quick start
 
-[New document](https://edit.chaxus.com/editor?new=docx&locale=en) · [New spreadsheet](https://edit.chaxus.com/editor?new=xlsx&locale=en) · [New presentation](https://edit.chaxus.com/editor?new=pptx&locale=en)
+[New document](https://word.whogogo.com/editor?new=docx&locale=en) · [New spreadsheet](https://excel.whogogo.com/editor?new=xlsx&locale=en) · [New presentation](https://ppt.whogogo.com/editor?new=pptx&locale=en)
 
 Or run your own copy:
 
@@ -70,7 +70,7 @@ Multilingual interfaces, light and dark themes, and read-only preview are also s
 
 ## 🔐 Local editing and data handling
 
-Recovery copies stay in this browser for 7 days after the last edit or open. Delete them in [Saved documents](https://edit.chaxus.com/history). Export anything you want to keep; recovery is not a backup.
+Recovery copies stay in this browser for 7 days after the last edit or open. Delete them in [Saved documents](https://word.whogogo.com/history). Export anything you want to keep; recovery is not a backup.
 
 Optional AI services receive the content needed for your request. On-device models keep it local. Browser dictation may use an online speech service; embedded exports are handled by the host app.
 
@@ -78,7 +78,7 @@ Your chosen browser AI agent controls how it handles content returned by documen
 
 ## Documentation
 
-[User guide](https://edit.chaxus.com/help) · [Self-hosting, URLs and integration](docs/reference.md) · [Embedding API](docs/embed-api.md) · [Fonts](docs/fonts.md)
+[User guide](https://word.whogogo.com/help) · [Self-hosting, URLs and integration](docs/reference.md) · [Embedding API](docs/embed-api.md) · [Fonts](docs/fonts.md)
 
 Offline use needs cached editor assets; uncached resources and remote files still need a network.
 

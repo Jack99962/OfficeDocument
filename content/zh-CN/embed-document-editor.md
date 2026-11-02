@@ -19,7 +19,7 @@ appDescription: '通过 iframe 和 postMessage 嵌入文档编辑器，由宿主
 ```html
 <iframe
   id="documentEditor"
-  src="https://edit.chaxus.com/editor?embed=1&embedOrigin=https://your-app.example.com"
+  src="https://word.whogogo.com/editor?embed=1&embedOrigin=https://your-app.example.com"
   style="width: 100%; height: 720px; border: 0"
 ></iframe>
 ```
@@ -30,7 +30,7 @@ appDescription: '通过 iframe 和 postMessage 嵌入文档编辑器，由宿主
 // 打开一个你的应用已经拉取好的文件（鉴权全在你这边）
 iframe.contentWindow.postMessage(
   { id, type: 'document:open-buffer', payload: { fileName: 'report.xlsx', buffer } },
-  'https://edit.chaxus.com',
+  'https://word.whogogo.com',
 );
 
 // 要回编辑后的文件，再由你自己上传

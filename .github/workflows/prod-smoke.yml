@@ -1,4 +1,4 @@
-# Smoke the DEPLOYED site (edit.chaxus.com): the same core E2E suites the PR
+# Smoke the deployed Word site: the same core E2E suites the PR
 # gate runs against a local build, pointed at production. Catches what only
 # the real deployment can break -- CDN headers, gzip wasm delivery, service
 # worker rollout, stale assets. Manual + daily; red is a page.
@@ -14,7 +14,7 @@ on:
     inputs:
       url:
         description: "Site to smoke"
-        default: "https://edit.chaxus.com"
+        default: "https://word.whogogo.com"
   schedule:
     - cron: "47 20 * * *" # 04:47 Asia/Shanghai, after the nightly corpus
 
@@ -44,12 +44,12 @@ jobs:
       - name: Wait for the deploy of this commit
         if: github.event_name == 'push'
         env:
-          PROD_URL: ${{ github.event.inputs.url || 'https://edit.chaxus.com' }}
+          PROD_URL: ${{ github.event.inputs.url || 'https://word.whogogo.com' }}
         run: node bin/wait-for-deploy.mjs "$PROD_URL" "$GITHUB_SHA"
 
       - name: Smoke production
         env:
-          PROD_URL: ${{ github.event.inputs.url || 'https://edit.chaxus.com' }}
+          PROD_URL: ${{ github.event.inputs.url || 'https://word.whogogo.com' }}
         run: pnpm exec playwright test -c playwright.prod.config.ts --reporter=list
 
       - name: Upload report

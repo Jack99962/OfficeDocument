@@ -181,7 +181,7 @@ test.describe('local history page', () => {
 
     // The confirmation is the design system's modal now, not the browser's:
     // a page about the user's own documents should not be interrupted by
-    // "edit.chaxus.com says".
+    // "word.whogogo.com says".
     await page.locator('.history-row', { hasText: 'Drop.docx' }).locator('.history-delete').click();
     await page.locator('r-modal .confirm-ok').click();
 

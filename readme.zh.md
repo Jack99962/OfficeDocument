@@ -10,8 +10,8 @@
   <a href="https://github.com/ranuts/document/releases">
     <img src="https://img.shields.io/github/v/release/ranuts/document" alt="版本">
   </a>
-  <a href="https://edit.chaxus.com/">
-    <img src="https://img.shields.io/badge/在线-edit.chaxus.com-brightgreen" alt="在线站点">
+  <a href="https://word.whogogo.com/">
+    <img src="https://img.shields.io/badge/在线-word.whogogo.com-brightgreen" alt="在线站点">
   </a>
 </p>
 
@@ -32,7 +32,7 @@
 
 支持可选 AI 助手（Experimental Beta）、WebMCP Agent 调用和 PWA 安装；已缓存的编辑器资源可离线使用，也可自行部署或嵌入应用。
 
-**在线体验：[edit.chaxus.com](https://edit.chaxus.com/)**
+**在线体验：[word.whogogo.com](https://word.whogogo.com/)**
 
 ---
 
@@ -47,7 +47,7 @@
 
 ## 🚀 快速开始
 
-[新建文档](https://edit.chaxus.com/editor?new=docx&locale=zh-CN) · [新建表格](https://edit.chaxus.com/editor?new=xlsx&locale=zh-CN) · [新建演示](https://edit.chaxus.com/editor?new=pptx&locale=zh-CN)
+[新建文档](https://word.whogogo.com/editor?new=docx&locale=zh-CN) · [新建表格](https://excel.whogogo.com/editor?new=xlsx&locale=zh-CN) · [新建演示](https://ppt.whogogo.com/editor?new=pptx&locale=zh-CN)
 
 也可以运行自己的版本：
 
@@ -70,7 +70,7 @@ docker run -d --name document -p 8080:80 ghcr.io/ranuts/document:latest
 
 ## 🔐 本地编辑与数据去向
 
-恢复副本保存在当前浏览器，最后编辑或打开后保留 7 天，可在[已保存的文档](https://edit.chaxus.com/history)中删除。恢复副本不是备份，重要文件请及时导出。
+恢复副本保存在当前浏览器，最后编辑或打开后保留 7 天，可在[已保存的文档](https://word.whogogo.com/history)中删除。恢复副本不是备份，重要文件请及时导出。
 
 使用外部 AI 服务时，请求所需内容会发送到该服务；本机模型在设备上处理。浏览器听写可能使用在线语音服务，嵌入模式下的导出由宿主应用处理。
 
@@ -78,7 +78,7 @@ docker run -d --name document -p 8080:80 ghcr.io/ranuts/document:latest
 
 ## 文档与集成
 
-[使用指南](https://edit.chaxus.com/zh-CN/help) · [自行部署、URL 参数与集成](docs/reference.md) · [嵌入 API](docs/embed-api.zh.md) · [字体管理](docs/fonts.zh.md)
+[使用指南](https://word.whogogo.com/zh-CN/help) · [自行部署、URL 参数与集成](docs/reference.md) · [嵌入 API](docs/embed-api.zh.md) · [字体管理](docs/fonts.zh.md)
 
 离线使用需要已缓存的编辑器资源，未缓存的资源和远程文件仍需联网。
 

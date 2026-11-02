@@ -1,6 +1,6 @@
 ---
 title: 문의 — 버그 신고나 문서 편집기에 대한 질문
-description: edit.chaxus.com을 만든 사람에게 연락하는 방법 — 버그, 잘못 표시되는 파일, 보안 문제 신고, 임베드와 자체 호스팅 문의. 접수된 문제는 GitHub에서 공개로 처리됩니다.
+description: word.whogogo.com을 만든 사람에게 연락하는 방법 — 버그, 잘못 표시되는 파일, 보안 문제 신고, 임베드와 자체 호스팅 문의. 접수된 문제는 GitHub에서 공개로 처리됩니다.
 eyebrow: 문의
 breadcrumb: 문의
 h1: 문의

@@ -19,7 +19,7 @@ En la edición básica local: El editor se ejecuta por completo en el navegador 
 ```html
 <iframe
   id="documentEditor"
-  src="https://edit.chaxus.com/editor?embed=1&embedOrigin=https://your-app.example.com"
+  src="https://word.whogogo.com/editor?embed=1&embedOrigin=https://your-app.example.com"
   style="width: 100%; height: 720px; border: 0"
 ></iframe>
 ```
@@ -30,7 +30,7 @@ Después háblale por `postMessage`. Cada comando lleva un `id` para que puedas 
 // abre un archivo que tu app ya ha obtenido (la auth se queda contigo)
 iframe.contentWindow.postMessage(
   { id, type: 'document:open-buffer', payload: { fileName: 'report.xlsx', buffer } },
-  'https://edit.chaxus.com',
+  'https://word.whogogo.com',
 );
 
 // pide de vuelta el archivo editado y súbelo tú

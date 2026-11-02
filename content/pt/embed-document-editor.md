@@ -19,7 +19,7 @@ Na edição básica local: O editor roda inteiramente no navegador com o motor W
 ```html
 <iframe
   id="documentEditor"
-  src="https://edit.chaxus.com/editor?embed=1&embedOrigin=https://your-app.example.com"
+  src="https://word.whogogo.com/editor?embed=1&embedOrigin=https://your-app.example.com"
   style="width: 100%; height: 720px; border: 0"
 ></iframe>
 ```
@@ -30,7 +30,7 @@ Depois é só falar com ele por `postMessage`. Cada comando leva um `id` para vo
 // abre um arquivo que seu app já buscou (a auth fica com você)
 iframe.contentWindow.postMessage(
   { id, type: 'document:open-buffer', payload: { fileName: 'report.xlsx', buffer } },
-  'https://edit.chaxus.com',
+  'https://word.whogogo.com',
 );
 
 // peça de volta o arquivo editado e envie você mesmo

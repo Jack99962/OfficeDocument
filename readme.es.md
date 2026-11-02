@@ -10,8 +10,8 @@
   <a href="https://github.com/ranuts/document/releases">
     <img src="https://img.shields.io/github/v/release/ranuts/document" alt="Version">
   </a>
-  <a href="https://edit.chaxus.com/">
-    <img src="https://img.shields.io/badge/Live-edit.chaxus.com-brightgreen" alt="Live site">
+  <a href="https://word.whogogo.com/">
+    <img src="https://img.shields.io/badge/Live-word.whogogo.com-brightgreen" alt="Live site">
   </a>
 </p>
 
@@ -32,7 +32,7 @@ Abre, edita, convierte y guarda Word, Excel y PowerPoint, y añade anotaciones a
 
 Usa asistencia de IA opcional (Experimental Beta), herramientas de documentos para agentes mediante WebMCP o la instalación como PWA. Los recursos del editor en caché funcionan sin conexión; también puedes alojarlo tú mismo o integrarlo en tu aplicación.
 
-**Probar en línea: [edit.chaxus.com](https://edit.chaxus.com/)**
+**Probar en línea: [word.whogogo.com](https://word.whogogo.com/)**
 
 ---
 
@@ -47,7 +47,7 @@ Usa asistencia de IA opcional (Experimental Beta), herramientas de documentos pa
 
 ## 🚀 Empezar
 
-[Nuevo documento](https://edit.chaxus.com/editor?new=docx&locale=es-ES) · [Nueva hoja de cálculo](https://edit.chaxus.com/editor?new=xlsx&locale=es-ES) · [Nueva presentación](https://edit.chaxus.com/editor?new=pptx&locale=es-ES)
+[Nuevo documento](https://word.whogogo.com/editor?new=docx&locale=es-ES) · [Nueva hoja de cálculo](https://excel.whogogo.com/editor?new=xlsx&locale=es-ES) · [Nueva presentación](https://ppt.whogogo.com/editor?new=pptx&locale=es-ES)
 
 O ejecuta tu propia copia:
 
@@ -70,7 +70,7 @@ También admite interfaces multilingües, temas claro y oscuro y vista previa de
 
 ## 🔐 Edición local y tratamiento de datos
 
-Las copias de recuperación se conservan en este navegador durante 7 días desde la última edición o apertura. Puedes eliminarlas en [Documentos guardados](https://edit.chaxus.com/history). No son una copia de seguridad; exporta los archivos importantes.
+Las copias de recuperación se conservan en este navegador durante 7 días desde la última edición o apertura. Puedes eliminarlas en [Documentos guardados](https://word.whogogo.com/history). No son una copia de seguridad; exporta los archivos importantes.
 
 Los servicios de IA externos reciben el contenido necesario para tu solicitud. Los modelos locales lo procesan en tu dispositivo. El dictado puede usar un servicio de voz en línea; la aplicación anfitriona gestiona las exportaciones integradas.
 
@@ -78,7 +78,7 @@ El agente de IA del navegador que elijas controla cómo procesa el contenido dev
 
 ## Documentación e integración
 
-[Guía de uso](https://edit.chaxus.com/es/help) · [Alojamiento, URL e integración](docs/reference.md) · [API de integración](docs/embed-api.md) · [Fuentes](docs/fonts.md)
+[Guía de uso](https://word.whogogo.com/es/help) · [Alojamiento, URL e integración](docs/reference.md) · [API de integración](docs/embed-api.md) · [Fuentes](docs/fonts.md)
 
 El uso sin conexión requiere recursos del editor en caché. Los recursos no guardados y los archivos remotos necesitan conexión.
 

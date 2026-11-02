@@ -10,8 +10,8 @@
   <a href="https://github.com/ranuts/document/releases">
     <img src="https://img.shields.io/github/v/release/ranuts/document" alt="Version">
   </a>
-  <a href="https://edit.chaxus.com/">
-    <img src="https://img.shields.io/badge/Live-edit.chaxus.com-brightgreen" alt="Live site">
+  <a href="https://word.whogogo.com/">
+    <img src="https://img.shields.io/badge/Live-word.whogogo.com-brightgreen" alt="Live site">
   </a>
 </p>
 
@@ -32,7 +32,7 @@
 
 دستیار اختیاری هوش مصنوعی (Experimental Beta)، فراخوانی ابزارهای سند توسط عامل‌ها از طریق WebMCP و نصب به‌صورت PWA پشتیبانی می‌شوند. منابع کش‌شدهٔ ویرایشگر آفلاین کار می‌کنند؛ می‌توانید آن را خودتان میزبانی یا در برنامهٔ خود جاسازی کنید.
 
-**امتحان آنلاین: [edit.chaxus.com](https://edit.chaxus.com/)**
+**امتحان آنلاین: [word.whogogo.com](https://word.whogogo.com/)**
 
 ---
 
@@ -47,7 +47,7 @@
 
 ## 🚀 شروع سریع
 
-[سند جدید](https://edit.chaxus.com/editor?new=docx&locale=en) · [صفحه‌گستردهٔ جدید](https://edit.chaxus.com/editor?new=xlsx&locale=en) · [ارائهٔ جدید](https://edit.chaxus.com/editor?new=pptx&locale=en)
+[سند جدید](https://word.whogogo.com/editor?new=docx&locale=en) · [صفحه‌گستردهٔ جدید](https://excel.whogogo.com/editor?new=xlsx&locale=en) · [ارائهٔ جدید](https://ppt.whogogo.com/editor?new=pptx&locale=en)
 
 یا نسخهٔ خود را اجرا کنید:
 
@@ -70,7 +70,7 @@ docker run -d --name document -p 8080:80 ghcr.io/ranuts/document:latest
 
 ## 🔐 ویرایش محلی و نحوهٔ پردازش داده‌ها
 
-نسخه‌های بازیابی تا ۷ روز پس از آخرین ویرایش یا بازکردن در این مرورگر می‌مانند. در [سندهای ذخیره‌شده](https://edit.chaxus.com/history) حذفشان کنید. این نسخه‌ها پشتیبان نیستند؛ فایل‌های مهم را خروجی بگیرید.
+نسخه‌های بازیابی تا ۷ روز پس از آخرین ویرایش یا بازکردن در این مرورگر می‌مانند. در [سندهای ذخیره‌شده](https://word.whogogo.com/history) حذفشان کنید. این نسخه‌ها پشتیبان نیستند؛ فایل‌های مهم را خروجی بگیرید.
 
 سرویس‌های بیرونی هوش مصنوعی محتوای لازم برای درخواست را دریافت می‌کنند. مدل‌های روی دستگاه آن را محلی پردازش می‌کنند. دیکته ممکن است از سرویس گفتار آنلاین استفاده کند؛ خروجی جاسازی‌شده را برنامهٔ میزبان مدیریت می‌کند.
 
@@ -78,7 +78,7 @@ docker run -d --name document -p 8080:80 ghcr.io/ranuts/document:latest
 
 ## مستندات و یکپارچه‌سازی
 
-[راهنمای کاربر](https://edit.chaxus.com/help) · [میزبانی، نشانی‌ها و یکپارچه‌سازی](docs/reference.md) · [API جاسازی](docs/embed-api.md) · [قلم‌ها](docs/fonts.md)
+[راهنمای کاربر](https://word.whogogo.com/help) · [میزبانی، نشانی‌ها و یکپارچه‌سازی](docs/reference.md) · [API جاسازی](docs/embed-api.md) · [قلم‌ها](docs/fonts.md)
 
 استفادهٔ آفلاین به منابع کش‌شدهٔ ویرایشگر نیاز دارد. منابع کش‌نشده و فایل‌های راه دور همچنان به شبکه نیاز دارند.
 

@@ -3,7 +3,7 @@ import { expect, test } from './lib/l0';
 import { settleEditor } from './lib/visual';
 
 /**
- * Font delivery regression guard (found live on edit.chaxus.com: the indexed
+ * Font delivery regression guard (found live on word.whogogo.com: the indexed
  * font catalog /fonts/NNN had no cache rule and the service worker's
  * stale-while-revalidate re-downloaded every multi-MB font on every open --
  * a deck's serial font queue took minutes). On the SECOND open in the same

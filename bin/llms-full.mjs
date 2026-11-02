@@ -23,7 +23,7 @@ import { LOCALES } from './build-pages.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const PUBLIC = resolve(ROOT, 'public');
-const ORIGIN = 'https://edit.chaxus.com';
+const ORIGIN = 'https://word.whogogo.com';
 const OUT = resolve(PUBLIC, 'llms-full.txt');
 
 /** Not landing pages: the vendored editor trees, the demo, the error page. */
@@ -119,7 +119,7 @@ export function render() {
   const parts = [
     '# Online Document Editor - full text',
     '',
-    '> Every English page of https://edit.chaxus.com in one file, chrome stripped.',
+    '> Every English page of https://word.whogogo.com in one file, chrome stripped.',
     '> This is the companion to /llms.txt, which indexes the same pages. Generated at',
     '> build time from the pages themselves, so it cannot drift from what the site says.',
     '>',

@@ -38,7 +38,7 @@ itself, and both are yours to remove:
 - **Seven days, then gone.** Each document is deleted automatically seven days
   after you last edited or opened it, whether or not you come back.
 
-[`/history`](https://edit.chaxus.com/history) lists what is stored, with a
+[`/history`](https://word.whogogo.com/history) lists what is stored, with a
 delete on every row, a delete-all, and a switch to turn autosave off entirely.
 Deleting there takes effect immediately. On a shared machine, that is the page
 to visit.

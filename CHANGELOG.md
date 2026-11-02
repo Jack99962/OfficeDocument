@@ -1,6 +1,6 @@
 # Changelog
 
-User-facing changes to the document editor ([edit.chaxus.com](https://edit.chaxus.com/)).
+User-facing changes to the document editor ([word.whogogo.com](https://word.whogogo.com/)).
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/); this
 file is the single source for the site changelog page and GitHub release
 notes. Entries describe what users experience, not internal refactors.

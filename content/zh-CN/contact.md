@@ -1,6 +1,6 @@
 ---
 title: 联系 — 报告问题或咨询这个文档编辑器
-description: 怎么联系 edit.chaxus.com 背后的人——报 bug、反馈渲染异常的文件、上报安全问题，或询问嵌入与自建。问题在 GitHub 上公开处理。
+description: 怎么联系 word.whogogo.com 背后的人——报 bug、反馈渲染异常的文件、上报安全问题，或询问嵌入与自建。问题在 GitHub 上公开处理。
 eyebrow: 联系
 breadcrumb: 联系
 h1: 联系

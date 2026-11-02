@@ -1,6 +1,6 @@
 ---
 title: Contacto — informar de un error o preguntar sobre el editor
-description: Cómo llegar a quienes están detrás de edit.chaxus.com — informar de un error, de un archivo que se muestra mal, de un problema de seguridad, o preguntar sobre incrustación y autoalojamiento. Las incidencias se atienden públicamente en GitHub.
+description: Cómo llegar a quienes están detrás de word.whogogo.com — informar de un error, de un archivo que se muestra mal, de un problema de seguridad, o preguntar sobre incrustación y autoalojamiento. Las incidencias se atienden públicamente en GitHub.
 eyebrow: Contacto
 breadcrumb: Contacto
 h1: Contacto

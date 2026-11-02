@@ -12,9 +12,9 @@ test('every public page serves sharing metadata without JavaScript', async ({ re
         const html = await response.text();
         expect(html, route).toContain('name="twitter:card" content="summary_large_image"');
         expect(html, route).toContain(
-          'property="og:image" content="https://edit.chaxus.com/social/document-editor-v1.png"',
+          'property="og:image" content="https://word.whogogo.com/social/document-editor-v1.png"',
         );
-        expect(html, route).toContain(`property="og:url" content="https://edit.chaxus.com${route}"`);
+        expect(html, route).toContain(`property="og:url" content="https://word.whogogo.com${route}"`);
       }),
     );
   }
@@ -37,7 +37,7 @@ test('editor and history serve generic cards without exposing local document sta
     const html = await response.text();
     expect(html).toContain('name="robots" content="noindex"');
     expect(html).toContain('property="og:title" content="Online Document Editor"');
-    expect(html).toContain('property="og:url" content="https://edit.chaxus.com/"');
+    expect(html).toContain('property="og:url" content="https://word.whogogo.com/"');
     expect(html).not.toContain('private-document');
   }
 });

@@ -1,4 +1,4 @@
-# Online Document Editor — https://edit.chaxus.com
+# Online Document Editor — https://word.whogogo.com
 # Strategy: maximize both search visibility and AI recall. Allow search engines
 # and AI crawlers alike — including AI *training* crawlers (GPTBot, ClaudeBot,
 # Google-Extended, CCBot, …). Allowing access does not guarantee indexing,
@@ -12,7 +12,7 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://edit.chaxus.com/sitemap.xml
+Sitemap: https://word.whogogo.com/sitemap.xml
 
 # For AI assistants: /llms.txt indexes the site (summary, capabilities,
 # limitations, links); /llms-full.txt is the same index plus the full text of

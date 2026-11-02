@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { generate } from '../../bin/build-pages.mjs';
 
 const ROOT = resolve(__dirname, '../..');
-const ORIGIN = 'https://edit.chaxus.com';
+const ORIGIN = 'https://word.whogogo.com';
 const IMAGE = `${ORIGIN}/social/document-editor-v1.png`;
 const outputs = generate({ outDir: null });
 

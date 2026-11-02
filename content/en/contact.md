@@ -1,6 +1,6 @@
 ---
 title: Contact — report a bug or ask about the document editor
-description: How to reach the people behind edit.chaxus.com — report a bug, a file that renders wrong, a security issue, or ask about embedding and self-hosting. Issues are handled publicly on GitHub.
+description: How to reach the people behind word.whogogo.com — report a bug, a file that renders wrong, a security issue, or ask about embedding and self-hosting. Issues are handled publicly on GitHub.
 eyebrow: Contact
 breadcrumb: Contact
 h1: Contact

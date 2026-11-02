@@ -2,7 +2,7 @@
   "name": "document",
   "version": "1.0.0",
   "packageManager": "pnpm@11.4.0",
-  "description": "A local-first browser editor for Word, Excel, PowerPoint and PDF, with an experimental AI assistant and optional user-configured AI services.",
+  "description": "A local-first browser editor for Word, Excel, PowerPoint and PDF.",
   "type": "module",
   "scripts": {
     "dev": "vite --host --force",
@@ -47,20 +47,17 @@
     "browser-editor",
     "document-converter",
     "office-suite",
-    "ai-assistant",
-    "webllm",
-    "webgpu",
-    "local-llm"
+    "office-editor"
   ],
   "author": "ranuts",
   "license": "AGPL-3.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ranuts/document.git"
+    "url": "https://github.com/Jack99962/OfficeDocument.git"
   },
-  "homepage": "https://edit.chaxus.com/",
+  "homepage": "https://word.whogogo.com/",
   "bugs": {
-    "url": "https://github.com/ranuts/document/issues"
+    "url": "https://github.com/Jack99962/OfficeDocument/issues"
   },
   "devDependencies": {
     "@playwright/test": "^1.64.0",

@@ -1,6 +1,6 @@
 # 流量度量启用 Checklist —— Cloudflare Web Analytics + GSC / Bing
 
-日期：2026-08-16 · 适用站点：edit.chaxus.com（Cloudflare Pages 部署）
+日期：2026-08-16 · 适用站点：word.whogogo.com（Cloudflare Pages 部署）
 
 ## 背景（为什么需要这份清单）
 
@@ -22,12 +22,12 @@
 
 ### 路线 A：Pages 项目面板一键开启（零代码，推荐先做）
 
-1. 登录 Cloudflare 控制台 → 左侧 **Workers & Pages** → 点开 `edit.chaxus.com` 项目。
+1. 登录 Cloudflare 控制台 → 左侧 **Workers & Pages** → 点开 `word.whogogo.com` 项目。
 2. 在项目页找 **Web Analytics**（面板版本不同，位置可能在项目内 Analytics 卡片、
    或控制台顶部 **Analytics & Logs → Web Analytics** 的站点列表里）。
 3. 开启后 CF 会在边缘自动注入 beacon：**无需改代码、无需重新部署**，
    约 1 分钟后开始计数。
-4. 验证：浏览器打开 https://edit.chaxus.com/ 查看页面源码，应出现
+4. 验证：浏览器打开 https://word.whogogo.com/ 查看页面源码，应出现
    `static.cloudflareinsights.com/beacon.min.js`；或直接在 Web Analytics 面板
    看到本机访问记录。
 
@@ -50,8 +50,8 @@
    保存后触发一次重新部署。
 
 4. 验证：
-   - `curl -s https://edit.chaxus.com/ | grep -c cloudflareinsights` → ≥ 1；
-   - `curl -s "https://edit.chaxus.com/editor?embed=1" | grep -c cloudflareinsights` → 0
+   - `curl -s https://word.whogogo.com/ | grep -c cloudflareinsights` → ≥ 1；
+   - `curl -s "https://word.whogogo.com/editor?embed=1" | grep -c cloudflareinsights` → 0
      （embed 场景不计入统计，是设计，不是丢数据）。
 
 > 两条路线都开会造成双份计数，选一条即可。建议：A 起步，数据粒度不够再补 B。
@@ -63,7 +63,7 @@
 **状态：站点已提交（用户确认）。** 这一节只做确认与持续动作：
 
 1. **GSC 面板确认**：打开 Google Search Console → 确认资源已验证、
-   `https://edit.chaxus.com/sitemap.xml` 提交成功、收录页数 > 0、
+   `https://word.whogogo.com/sitemap.xml` 提交成功、收录页数 > 0、
    能看到搜索词 / 点击 / 曝光数据（约提交后 1–2 周数据才稳定）。
 2. **Bing Webmaster Tools**：确认导入/验证状态（可从 GSC 一键导入）。
 3. **持续动作**：每新增落地页（`/open/*`、`/convert/*`、新语言页），sitemap 由

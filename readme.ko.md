@@ -10,8 +10,8 @@
   <a href="https://github.com/ranuts/document/releases">
     <img src="https://img.shields.io/github/v/release/ranuts/document" alt="Version">
   </a>
-  <a href="https://edit.chaxus.com/">
-    <img src="https://img.shields.io/badge/Live-edit.chaxus.com-brightgreen" alt="Live site">
+  <a href="https://word.whogogo.com/">
+    <img src="https://img.shields.io/badge/Live-word.whogogo.com-brightgreen" alt="Live site">
   </a>
 </p>
 
@@ -32,7 +32,7 @@
 
 선택형 AI 도우미(Experimental Beta), WebMCP를 통한 에이전트의 문서 도구 호출, PWA 설치를 지원합니다. 캐시된 편집기 리소스는 오프라인에서 사용할 수 있고, 자체 호스팅하거나 앱에 임베드할 수도 있습니다.
 
-**온라인으로 사용: [edit.chaxus.com](https://edit.chaxus.com/)**
+**온라인으로 사용: [word.whogogo.com](https://word.whogogo.com/)**
 
 ---
 
@@ -47,7 +47,7 @@
 
 ## 🚀 빠른 시작
 
-[새 문서](https://edit.chaxus.com/editor?new=docx&locale=ko-KR) · [새 스프레드시트](https://edit.chaxus.com/editor?new=xlsx&locale=ko-KR) · [새 프레젠테이션](https://edit.chaxus.com/editor?new=pptx&locale=ko-KR)
+[새 문서](https://word.whogogo.com/editor?new=docx&locale=ko-KR) · [새 스프레드시트](https://excel.whogogo.com/editor?new=xlsx&locale=ko-KR) · [새 프레젠테이션](https://ppt.whogogo.com/editor?new=pptx&locale=ko-KR)
 
 직접 실행할 수도 있습니다:
 
@@ -70,7 +70,7 @@ docker run -d --name document -p 8080:80 ghcr.io/ranuts/document:latest
 
 ## 🔐 로컬 편집과 데이터 처리
 
-복구 사본은 마지막 편집 또는 열기 후 7일 동안 이 브라우저에 보관됩니다. [저장된 문서](https://edit.chaxus.com/history)에서 삭제할 수 있습니다. 백업이 아니므로 중요한 파일은 내보내세요.
+복구 사본은 마지막 편집 또는 열기 후 7일 동안 이 브라우저에 보관됩니다. [저장된 문서](https://word.whogogo.com/history)에서 삭제할 수 있습니다. 백업이 아니므로 중요한 파일은 내보내세요.
 
 외부 AI 서비스에는 요청에 필요한 내용이 전송됩니다. 기기 내 모델은 로컬에서 처리합니다. 음성 입력은 온라인 서비스를 사용할 수 있고, 임베드 내보내기는 호스트 앱이 처리합니다.
 
@@ -78,7 +78,7 @@ docker run -d --name document -p 8080:80 ghcr.io/ranuts/document:latest
 
 ## 문서 및 통합
 
-[사용 안내](https://edit.chaxus.com/ko/help) · [호스팅, URL 및 통합](docs/reference.md) · [임베드 API](docs/embed-api.md) · [글꼴](docs/fonts.md)
+[사용 안내](https://word.whogogo.com/ko/help) · [호스팅, URL 및 통합](docs/reference.md) · [임베드 API](docs/embed-api.md) · [글꼴](docs/fonts.md)
 
 오프라인 사용에는 캐시된 편집기 리소스가 필요합니다. 캐시되지 않은 리소스와 원격 파일에는 네트워크가 필요합니다.
 

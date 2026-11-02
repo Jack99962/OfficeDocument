@@ -73,7 +73,7 @@ describe('readme translations', () => {
   /** The live URL and the license are facts, not prose; they must not be "translated". */
   it.each(READMES)('%s keeps the shared links intact', (file) => {
     const markdown = read(file);
-    expect(markdown).toContain('https://edit.chaxus.com/');
+    expect(markdown).toContain('https://word.whogogo.com/');
     expect(markdown).toContain('[AGPL-3.0](LICENSE)');
     expect(markdown).toContain('ghcr.io/ranuts/document:latest');
   });

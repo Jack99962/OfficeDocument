@@ -19,7 +19,7 @@ appDescription: 'iframe と postMessage でエディタを埋め込み、ファ�
 ```html
 <iframe
   id="documentEditor"
-  src="https://edit.chaxus.com/editor?embed=1&embedOrigin=https://your-app.example.com"
+  src="https://word.whogogo.com/editor?embed=1&embedOrigin=https://your-app.example.com"
   style="width: 100%; height: 720px; border: 0"
 ></iframe>
 ```
@@ -30,7 +30,7 @@ appDescription: 'iframe と postMessage でエディタを埋め込み、ファ�
 // open a file your app already fetched (auth stays with you)
 iframe.contentWindow.postMessage(
   { id, type: 'document:open-buffer', payload: { fileName: 'report.xlsx', buffer } },
-  'https://edit.chaxus.com',
+  'https://word.whogogo.com',
 );
 
 // ask for the edited file back, then upload it yourself

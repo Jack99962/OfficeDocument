@@ -19,7 +19,7 @@ The editor runs entirely in the browser with the OnlyOffice WebAssembly engine, 
 ```html
 <iframe
   id="documentEditor"
-  src="https://edit.chaxus.com/editor?embed=1&embedOrigin=https://your-app.example.com"
+  src="https://word.whogogo.com/editor?embed=1&embedOrigin=https://your-app.example.com"
   style="width: 100%; height: 720px; border: 0"
 ></iframe>
 ```
@@ -30,7 +30,7 @@ Then talk to it over `postMessage`. Every command takes an `id` so you can match
 // open a file your app already fetched (auth stays with you)
 iframe.contentWindow.postMessage(
   { id, type: 'document:open-buffer', payload: { fileName: 'report.xlsx', buffer } },
-  'https://edit.chaxus.com',
+  'https://word.whogogo.com',
 );
 
 // ask for the edited file back, then upload it yourself

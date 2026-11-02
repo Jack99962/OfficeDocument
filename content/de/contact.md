@@ -1,6 +1,6 @@
 ---
 title: Kontakt — einen Fehler melden oder zum Dokumenteneditor fragen
-description: Wie Sie die Leute hinter edit.chaxus.com erreichen — einen Fehler melden, eine falsch dargestellte Datei, ein Sicherheitsproblem, oder Fragen zu Einbettung und Selbst-Hosting. Anfragen werden öffentlich auf GitHub bearbeitet.
+description: Wie Sie die Leute hinter word.whogogo.com erreichen — einen Fehler melden, eine falsch dargestellte Datei, ein Sicherheitsproblem, oder Fragen zu Einbettung und Selbst-Hosting. Anfragen werden öffentlich auf GitHub bearbeitet.
 eyebrow: Kontakt
 breadcrumb: Kontakt
 h1: Kontakt

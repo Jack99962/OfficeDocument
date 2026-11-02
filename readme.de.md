@@ -10,8 +10,8 @@
   <a href="https://github.com/ranuts/document/releases">
     <img src="https://img.shields.io/github/v/release/ranuts/document" alt="Version">
   </a>
-  <a href="https://edit.chaxus.com/">
-    <img src="https://img.shields.io/badge/Live-edit.chaxus.com-brightgreen" alt="Live site">
+  <a href="https://word.whogogo.com/">
+    <img src="https://img.shields.io/badge/Live-word.whogogo.com-brightgreen" alt="Live site">
   </a>
 </p>
 
@@ -32,7 +32,7 @@ Word, Excel und PowerPoint im Browser öffnen, bearbeiten, konvertieren und spei
 
 Nutze optionale KI-Unterstützung (Experimental Beta), Dokumentenwerkzeuge für Browser-Agenten über WebMCP oder die PWA-Installation. Zwischengespeicherte Editor-Ressourcen funktionieren offline; du kannst den Editor auch selbst hosten oder in deine App einbetten.
 
-**Online ausprobieren: [edit.chaxus.com](https://edit.chaxus.com/)**
+**Online ausprobieren: [word.whogogo.com](https://word.whogogo.com/)**
 
 ---
 
@@ -47,7 +47,7 @@ Nutze optionale KI-Unterstützung (Experimental Beta), Dokumentenwerkzeuge für 
 
 ## 🚀 Schnellstart
 
-[Neues Dokument](https://edit.chaxus.com/editor?new=docx&locale=de-DE) · [Neue Tabelle](https://edit.chaxus.com/editor?new=xlsx&locale=de-DE) · [Neue Präsentation](https://edit.chaxus.com/editor?new=pptx&locale=de-DE)
+[Neues Dokument](https://word.whogogo.com/editor?new=docx&locale=de-DE) · [Neue Tabelle](https://excel.whogogo.com/editor?new=xlsx&locale=de-DE) · [Neue Präsentation](https://ppt.whogogo.com/editor?new=pptx&locale=de-DE)
 
 Oder selbst betreiben:
 
@@ -70,7 +70,7 @@ Mehrsprachige Oberflächen, helle und dunkle Designs sowie schreibgeschützte Vo
 
 ## 🔐 Lokale Bearbeitung und Datenverarbeitung
 
-Wiederherstellungskopien bleiben nach dem letzten Bearbeiten oder Öffnen 7 Tage in diesem Browser. Lösche sie unter [Gespeicherte Dokumente](https://edit.chaxus.com/history). Sie sind kein Backup; exportiere wichtige Dateien.
+Wiederherstellungskopien bleiben nach dem letzten Bearbeiten oder Öffnen 7 Tage in diesem Browser. Lösche sie unter [Gespeicherte Dokumente](https://word.whogogo.com/history). Sie sind kein Backup; exportiere wichtige Dateien.
 
 Externe KI-Dienste erhalten die für deine Anfrage benötigten Inhalte. Gerätemodelle verarbeiten sie lokal. Diktieren kann einen Online-Sprachdienst nutzen; eingebettete Exporte verarbeitet die Host-App.
 
@@ -78,7 +78,7 @@ Der gewählte Browser-KI-Agent bestimmt, wie er die von Dokumentenwerkzeugen zur
 
 ## Dokumentation und Integration
 
-[Benutzerhandbuch](https://edit.chaxus.com/de/help) · [Hosting, URLs und Integration](docs/reference.md) · [Einbettungs-API](docs/embed-api.md) · [Schriften](docs/fonts.md)
+[Benutzerhandbuch](https://word.whogogo.com/de/help) · [Hosting, URLs und Integration](docs/reference.md) · [Einbettungs-API](docs/embed-api.md) · [Schriften](docs/fonts.md)
 
 Offline sind zwischengespeicherte Editor-Ressourcen nötig. Nicht gespeicherte Ressourcen und entfernte Dateien benötigen eine Verbindung.
 

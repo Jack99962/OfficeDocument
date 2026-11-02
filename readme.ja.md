@@ -10,8 +10,8 @@
   <a href="https://github.com/ranuts/document/releases">
     <img src="https://img.shields.io/github/v/release/ranuts/document" alt="Version">
   </a>
-  <a href="https://edit.chaxus.com/">
-    <img src="https://img.shields.io/badge/Live-edit.chaxus.com-brightgreen" alt="Live site">
+  <a href="https://word.whogogo.com/">
+    <img src="https://img.shields.io/badge/Live-word.whogogo.com-brightgreen" alt="Live site">
   </a>
 </p>
 
@@ -32,7 +32,7 @@
 
 必要に応じて AI アシスタント（Experimental Beta）、WebMCP によるエージェントの文書ツール呼び出し、PWA インストールを利用できます。キャッシュ済みの編集リソースはオフラインでも使え、自分でホストしたりアプリに組み込んだりできます。
 
-**オンラインで試す：[edit.chaxus.com](https://edit.chaxus.com/)**
+**オンラインで試す：[word.whogogo.com](https://word.whogogo.com/)**
 
 ---
 
@@ -47,7 +47,7 @@
 
 ## 🚀 はじめかた
 
-[文書を作成](https://edit.chaxus.com/editor?new=docx&locale=ja-JP) · [表計算を作成](https://edit.chaxus.com/editor?new=xlsx&locale=ja-JP) · [スライドを作成](https://edit.chaxus.com/editor?new=pptx&locale=ja-JP)
+[文書を作成](https://word.whogogo.com/editor?new=docx&locale=ja-JP) · [表計算を作成](https://excel.whogogo.com/editor?new=xlsx&locale=ja-JP) · [スライドを作成](https://ppt.whogogo.com/editor?new=pptx&locale=ja-JP)
 
 自分の環境で実行するには：
 
@@ -70,7 +70,7 @@ docker run -d --name document -p 8080:80 ghcr.io/ranuts/document:latest
 
 ## 🔐 ローカル編集とデータの扱い
 
-復元用コピーは最後の編集・閲覧から 7 日間、このブラウザーに保存されます。[保存済み文書](https://edit.chaxus.com/history)から削除できます。バックアップではないため、大切なファイルは書き出してください。
+復元用コピーは最後の編集・閲覧から 7 日間、このブラウザーに保存されます。[保存済み文書](https://word.whogogo.com/history)から削除できます。バックアップではないため、大切なファイルは書き出してください。
 
 外部 AI サービスにはリクエストに必要な内容が送信されます。端末内モデルはローカルで処理します。音声入力はオンライン音声サービスを使う場合があり、埋め込み時の書き出しはホストアプリが扱います。
 
@@ -78,7 +78,7 @@ docker run -d --name document -p 8080:80 ghcr.io/ranuts/document:latest
 
 ## ドキュメントと連携
 
-[使い方](https://edit.chaxus.com/ja/help) · [ホスティング・URL・連携](docs/reference.md) · [埋め込み API](docs/embed-api.md) · [フォント](docs/fonts.md)
+[使い方](https://word.whogogo.com/ja/help) · [ホスティング・URL・連携](docs/reference.md) · [埋め込み API](docs/embed-api.md) · [フォント](docs/fonts.md)
 
 オフライン利用にはキャッシュ済みの編集リソースが必要です。未取得のリソースやリモートファイルには通信が必要です。
 

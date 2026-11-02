@@ -19,7 +19,7 @@ appDescription: 'iframe과 postMessage로 편집기를 임베드하고 호스트
 ```html
 <iframe
   id="documentEditor"
-  src="https://edit.chaxus.com/editor?embed=1&embedOrigin=https://your-app.example.com"
+  src="https://word.whogogo.com/editor?embed=1&embedOrigin=https://your-app.example.com"
   style="width: 100%; height: 720px; border: 0"
 ></iframe>
 ```
@@ -30,7 +30,7 @@ appDescription: 'iframe과 postMessage로 편집기를 임베드하고 호스트
 // 내 앱이 이미 가져온 파일 열기(인증은 내 앱에 남습니다)
 iframe.contentWindow.postMessage(
   { id, type: 'document:open-buffer', payload: { fileName: 'report.xlsx', buffer } },
-  'https://edit.chaxus.com',
+  'https://word.whogogo.com',
 );
 
 // 편집된 파일을 돌려받고 직접 업로드

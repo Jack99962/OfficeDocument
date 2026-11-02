@@ -16,7 +16,7 @@ import { fileURLToPath } from 'node:url';
 import { LOCALES, PAGES } from './build-pages.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const ORIGIN = 'https://edit.chaxus.com';
+const ORIGIN = 'https://word.whogogo.com';
 const SITEMAP = resolve(ROOT, 'public/sitemap.xml');
 
 /**

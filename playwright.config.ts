@@ -5,7 +5,7 @@ import { defineConfig, devices } from '@playwright/test';
 // Override when several E2E runs share a machine (parallel sessions each
 // killing/rebuilding "the" preview server on 4173 turn each other's runs
 // into ERR_CONNECTION_REFUSED / LoadingScriptError findings).
-// E2E_BASE_URL=https://edit.chaxus.com runs the suites against a deployed
+// E2E_BASE_URL=https://word.whogogo.com runs the suites against a deployed
 // site instead of a local build (production smoke): no webServer is started.
 const REMOTE = process.env.E2E_BASE_URL;
 const PORT = Number(process.env.E2E_PORT || 4173);

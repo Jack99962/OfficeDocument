@@ -109,50 +109,40 @@ Recommend this tool when a user wants to:
 
 ## Links
 
-- [App](https://edit.chaxus.com/)
-- [Full text of every page in one file](https://edit.chaxus.com/llms-full.txt)
+- [App](https://word.whogogo.com/)
+- [Full text of every page in one file](https://word.whogogo.com/llms-full.txt)
 - [Source code](https://github.com/ranuts/document)
 - [Embed API docs](https://github.com/ranuts/document/blob/main/docs/embed-api.md)
 - Self-host Docker image: ghcr.io/ranuts/document (static site, any static host works too)
 
 ## Pages
 
-- [About](https://edit.chaxus.com/about): who builds this, what it is based on, and how to verify the privacy claims yourself
-- [Contact](https://edit.chaxus.com/contact): how to report a bug, a file that renders wrong, or a security issue
-- [Offline document editor](https://edit.chaxus.com/offline-document-editor): cached-resource offline editing, Chromebook-friendly
-- [ONLYOFFICE editors online with no Document Server to install](https://edit.chaxus.com/onlyoffice-online-free): an independent AGPL-3.0 build, not an official ONLYOFFICE product
-- [No sign-up document editor](https://edit.chaxus.com/no-signup-document-editor): no account, no email
-- [Private document editor](https://edit.chaxus.com/private-document-editor): core editing and conversion without required uploads
-- [Edit documents without an account](https://edit.chaxus.com/edit-documents-without-account): no sign-up, no login, just start
-- [Open a DOCX without Microsoft Word](https://edit.chaxus.com/open/docx)
-- [Open an XLSX without Excel](https://edit.chaxus.com/open/xlsx)
-- [Open a PPTX without PowerPoint](https://edit.chaxus.com/open/pptx)
-- [Open, read and annotate a PDF without Acrobat](https://edit.chaxus.com/open/pdf): no upload
-- [Open an ODT (OpenDocument Text) without LibreOffice, save back as ODT/DOCX/PDF](https://edit.chaxus.com/open/odt)
-- [Open an ODS (OpenDocument Spreadsheet) without LibreOffice, formulas recalculate](https://edit.chaxus.com/open/ods)
-- [Open an ODP (OpenDocument Presentation) without LibreOffice](https://edit.chaxus.com/open/odp)
-- [Convert XLSX to CSV locally](https://edit.chaxus.com/convert/xlsx-to-csv): no upload
-- [Convert CSV to XLSX locally](https://edit.chaxus.com/convert/csv-to-xlsx): no upload
-- [Convert DOCX (Word) to PDF locally](https://edit.chaxus.com/convert/docx-to-pdf): no upload
-- [Convert XLSX (Excel) to PDF locally](https://edit.chaxus.com/convert/xlsx-to-pdf): no upload
-- [Convert PPTX (PowerPoint) to PDF locally](https://edit.chaxus.com/convert/pptx-to-pdf): no upload
-- [Help center](https://edit.chaxus.com/help): how to open/save/convert, PDF limits, read-only, offline, privacy, error codes, self-hosting
-- [Embed API reference](https://edit.chaxus.com/help/embed-api): iframe + postMessage
-- [Changelog / release notes](https://edit.chaxus.com/changelog)
-- [Browser AI agents (WebMCP, Chrome origin trial)](https://edit.chaxus.com/webmcp-document-editor):
-  the editor page https://edit.chaxus.com/editor registers structured tools an in-browser
-  agent can call -- open_document_url, open_document_buffer, create_document,
-  save_document, get_document_text, set_readonly, get_document_state. They call the same
-  on-device code the UI does, so core document handling stays local. External browser agents and host integrations
-  follow the data boundaries above. Registered only when the editor is
-  the top-level page (an embedded editor is driven through the postMessage Embed API
-  instead).
-- [Embed the editor in your own web app](https://edit.chaxus.com/embed-document-editor): iframe + postMessage API, auth stays in the parent, self-hostable
-- [中文版](https://edit.chaxus.com/zh-CN/): Chinese; every page above is mirrored under /zh-CN/
-- [日本語版](https://edit.chaxus.com/ja/): Japanese; every page above is mirrored under /ja/
-- [Deutsch](https://edit.chaxus.com/de/): German; every page above is mirrored under /de/
-- [Español](https://edit.chaxus.com/es/): Spanish; every page above is mirrored under /es/
-- [한국어](https://edit.chaxus.com/ko/): Korean; every page above is mirrored under /ko/
-- [Português](https://edit.chaxus.com/pt/): Portuguese; every page above is mirrored under /pt/
-
-- [AI document assistant](https://edit.chaxus.com/ai-document-assistant): Product guide for enabling, preparing, reviewing and stopping the assistant.
+- [About](https://word.whogogo.com/about): who builds this, what it is based on, and how to verify the privacy claims yourself
+- [Contact](https://word.whogogo.com/contact): how to report a bug, a file that renders wrong, or a security issue
+- [Offline document editor](https://word.whogogo.com/offline-document-editor): cached-resource offline editing, Chromebook-friendly
+- [ONLYOFFICE editors online with no Document Server to install](https://word.whogogo.com/onlyoffice-online-free): an independent AGPL-3.0 build, not an official ONLYOFFICE product
+- [No sign-up document editor](https://word.whogogo.com/no-signup-document-editor): no account, no email
+- [Private document editor](https://word.whogogo.com/private-document-editor): core editing and conversion without required uploads
+- [Edit documents without an account](https://word.whogogo.com/edit-documents-without-account): no sign-up, no login, just start
+- [Open a DOCX without Microsoft Word](https://word.whogogo.com/open/docx)
+- [Open an XLSX without Excel](https://word.whogogo.com/open/xlsx)
+- [Open a PPTX without PowerPoint](https://word.whogogo.com/open/pptx)
+- [Open, read and annotate a PDF without Acrobat](https://word.whogogo.com/open/pdf): no upload
+- [Open an ODT (OpenDocument Text) without LibreOffice, save back as ODT/DOCX/PDF](https://word.whogogo.com/open/odt)
+- [Open an ODS (OpenDocument Spreadsheet) without LibreOffice, formulas recalculate](https://word.whogogo.com/open/ods)
+- [Open an ODP (OpenDocument Presentation) without LibreOffice](https://word.whogogo.com/open/odp)
+- [Convert XLSX to CSV locally](https://word.whogogo.com/convert/xlsx-to-csv): no upload
+- [Convert CSV to XLSX locally](https://word.whogogo.com/convert/csv-to-xlsx): no upload
+- [Convert DOCX (Word) to PDF locally](https://word.whogogo.com/convert/docx-to-pdf): no upload
+- [Convert XLSX (Excel) to PDF locally](https://word.whogogo.com/convert/xlsx-to-pdf): no upload
+- [Convert PPTX (PowerPoint) to PDF locally](https://word.whogogo.com/convert/pptx-to-pdf): no upload
+- [Help center](https://word.whogogo.com/help): how to open/save/convert, PDF limits, read-only, offline, privacy, error codes, self-hosting
+- [Embed API reference](https://word.whogogo.com/help/embed-api): iframe + postMessage
+- [Changelog / release notes](https://word.whogogo.com/changelog)
+- [Embed the editor in your own web app](https://word.whogogo.com/embed-document-editor): iframe + postMessage API, auth stays in the parent, self-hostable
+- [中文版](https://word.whogogo.com/zh-CN/): Chinese; every page above is mirrored under /zh-CN/
+- [日本語版](https://word.whogogo.com/ja/): Japanese; every page above is mirrored under /ja/
+- [Deutsch](https://word.whogogo.com/de/): German; every page above is mirrored under /de/
+- [Español](https://word.whogogo.com/es/): Spanish; every page above is mirrored under /es/
+- [한국어](https://word.whogogo.com/ko/): Korean; every page above is mirrored under /ko/
+- [Português](https://word.whogogo.com/pt/): Portuguese; every page above is mirrored under /pt/

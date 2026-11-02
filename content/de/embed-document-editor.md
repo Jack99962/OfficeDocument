@@ -19,7 +19,7 @@ Der Editor läuft vollständig im Browser mit der WebAssembly-Engine von OnlyOff
 ```html
 <iframe
   id="documentEditor"
-  src="https://edit.chaxus.com/editor?embed=1&embedOrigin=https://your-app.example.com"
+  src="https://word.whogogo.com/editor?embed=1&embedOrigin=https://your-app.example.com"
   style="width: 100%; height: 720px; border: 0"
 ></iframe>
 ```
@@ -30,7 +30,7 @@ Danach sprechen Sie per `postMessage` mit ihm. Jeder Befehl trägt eine `id`, da
 // eine Datei öffnen, die Ihre App bereits geholt hat (Auth bleibt bei Ihnen)
 iframe.contentWindow.postMessage(
   { id, type: 'document:open-buffer', payload: { fileName: 'report.xlsx', buffer } },
-  'https://edit.chaxus.com',
+  'https://word.whogogo.com',
 );
 
 // die bearbeitete Datei zurückverlangen und selbst hochladen

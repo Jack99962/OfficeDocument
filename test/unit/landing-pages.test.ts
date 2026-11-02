@@ -14,7 +14,7 @@ import { LOCALES, MENU_ORDER, generate } from '../../bin/build-pages.mjs';
  */
 const ROOT = resolve(__dirname, '../..');
 const PUBLIC = resolve(ROOT, 'public');
-const ORIGIN = 'https://edit.chaxus.com';
+const ORIGIN = 'https://word.whogogo.com';
 const NOT_LANDING = new Set(['404.html', 'embed-demo.html']);
 // Pages rendered from markdown at build time (not committed under public/):
 // the same contract applies, so they are validated from a fresh in-memory render.
@@ -572,7 +572,7 @@ describe('llms.txt', () => {
 
   it('links only to pages that exist', () => {
     const site = linkBullets
-      .flatMap((line) => [...line.matchAll(/\((https:\/\/edit\.chaxus\.com([^)]*))\)/g)].map((m) => m[2]))
+      .flatMap((line) => [...line.matchAll(/\((https:\/\/word\.whogogo\.com([^)]*))\)/g)].map((m) => m[2]))
       .map((path) => (path === '' ? '/' : path));
     expect(site.length).toBeGreaterThan(20);
     for (const path of site) {

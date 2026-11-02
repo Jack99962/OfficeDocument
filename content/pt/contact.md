@@ -1,6 +1,6 @@
 ---
 title: Contato — relatar um bug ou tirar dúvidas sobre o editor
-description: Como falar com quem está por trás do edit.chaxus.com — relatar um bug, um arquivo que aparece errado, um problema de segurança, ou tirar dúvidas sobre incorporação e auto-hospedagem. Os relatos são tratados publicamente no GitHub.
+description: Como falar com quem está por trás do word.whogogo.com — relatar um bug, um arquivo que aparece errado, um problema de segurança, ou tirar dúvidas sobre incorporação e auto-hospedagem. Os relatos são tratados publicamente no GitHub.
 eyebrow: Contato
 breadcrumb: Contato
 h1: Contato
