@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path, { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { brotliDecompressSync, gzipSync } from 'node:zlib';
 import { defineConfig, type Plugin } from 'vite';
 import { workspaceSourceAliases } from './bin/workspace-aliases.mjs';
 import { PAGES, generate as generatePages } from './bin/build-pages.mjs';
@@ -77,15 +78,16 @@ const localIsolationHeaders = (): Plugin => {
   };
 };
 
-// The x2t WASM is stored as brotli bytes under its plain `.wasm` name, so the
-// browser decodes it at the network layer and `instantiateStreaming` can
-// compile it straight off the response (see public/_headers for why). Vite
-// serves public/ and dist/ as plain files and would hand over the compressed
-// bytes unlabelled, so dev and preview need the same declaration Cloudflare
-// Pages and static-web-server get from their own config.
+// The x2t WASM is stored as Brotli bytes for HTTPS production hosting. Vite is
+// commonly reached over ordinary HTTP on a LAN (`http://192.168.x.x:5173`),
+// where serving that Brotli payload has produced a rejected fetch before x2t
+// can instantiate. Serve a gzip representation in dev/preview, matching the
+// Docker HTTP build, and raw WASM only for clients which do not accept gzip.
 const BROTLI_ASSETS = ['/sdkjs/common/wasm/x2t/x2t.wasm.br'];
 
 const precompressedAssets = (): Plugin => {
+  let rawWasm: Buffer | null = null;
+  let gzipWasm: Buffer | null = null;
   const middleware = (
     req: import('node:http').IncomingMessage,
     res: import('node:http').ServerResponse,
@@ -93,46 +95,24 @@ const precompressedAssets = (): Plugin => {
   ): void => {
     const pathname = (req.url ?? '/').split('?')[0];
     if (BROTLI_ASSETS.includes(pathname)) {
-      // Content-Encoding only: the loader labels the response
-      // application/wasm itself, and a compressible Content-Type is exactly
-      // what makes wrangler re-compress the file (see public/_headers).
-      res.setHeader('Content-Encoding', 'br');
+      rawWasm ??= brotliDecompressSync(
+        fs.readFileSync(path.join(__dirname, 'public/sdkjs/common/wasm/x2t/x2t.wasm.br')),
+      );
+      const acceptsGzip = /(?:^|,|\s)gzip(?:,|\s|$)/i.test(String(req.headers['accept-encoding'] ?? ''));
+      const body = acceptsGzip ? (gzipWasm ??= gzipSync(rawWasm, { level: 9 })) : rawWasm;
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'application/wasm');
+      res.setHeader('Content-Length', String(body.byteLength));
+      res.setHeader('Cache-Control', 'no-cache');
+      if (acceptsGzip) res.setHeader('Content-Encoding', 'gzip');
+      if (req.method === 'HEAD') res.end();
+      else res.end(body);
+      return;
     }
     next();
   };
   return {
     name: 'precompressed-assets',
-    configureServer(server) {
-      server.middlewares.use(middleware);
-    },
-    configurePreviewServer(server) {
-      server.middlewares.use(middleware);
-    },
-  };
-};
-
-// The model Worker needs its own response policy; document meta CSP does not
-// restrict this module Worker. Keep legacy vendor scripts outside this scope.
-const MODEL_WORKER_CSP =
-  "default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; connect-src 'self' https: http: blob:; worker-src 'self' blob:";
-const modelWorkerCsp = (): Plugin => {
-  const middleware = (
-    req: import('node:http').IncomingMessage,
-    res: import('node:http').ServerResponse,
-    next: () => void,
-  ): void => {
-    const pathname = (req.url ?? '/').split('?')[0];
-    if (
-      /^\/assets\/webllm\.worker-[A-Za-z0-9_-]+\.js$/.test(pathname) ||
-      pathname.endsWith('/packages/agent-core/dist/llm/webllm.worker.js') ||
-      pathname.endsWith('/packages/agent-core/src/llm/webllm.worker.ts')
-    ) {
-      res.setHeader('Content-Security-Policy', MODEL_WORKER_CSP);
-    }
-    next();
-  };
-  return {
-    name: 'model-worker-csp',
     configureServer(server) {
       server.middlewares.use(middleware);
     },
@@ -191,26 +171,6 @@ export default defineConfig(({ command }) => {
     preview: {
       headers: { 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Embedder-Policy': 'require-corp' },
     },
-    // A policy change must invalidate immutable Worker URLs, including old SW caches.
-    worker: {
-      plugins: () => [
-        {
-          name: 'model-worker-policy-version',
-          renderChunk(code) {
-            // Observable Worker-only metadata ensures minification retains the policy
-            // fingerprint, so a response-policy change gets a new immutable URL.
-            return {
-              code:
-                code +
-                '\nObject.defineProperty(self,"__localModelWorkerCsp",{value:' +
-                JSON.stringify(MODEL_WORKER_CSP) +
-                '});',
-              map: null,
-            };
-          },
-        },
-      ],
-    },
     build: {
       outDir: 'dist',
       manifest: true,
@@ -225,13 +185,7 @@ export default defineConfig(({ command }) => {
         },
       },
     },
-    plugins: [
-      localIsolationHeaders(),
-      modelWorkerCsp(),
-      generatedPages(),
-      precompressedAssets(),
-      cleanUrls(publicDirName),
-    ],
+    plugins: [localIsolationHeaders(), generatedPages(), precompressedAssets(), cleanUrls(publicDirName)],
     resolve: {
       // One wildcard, matching tsconfig's `"@/*": ["./*"]`, so `@/lib/x`
       // resolves the same way for tsc and for the bundler. The five

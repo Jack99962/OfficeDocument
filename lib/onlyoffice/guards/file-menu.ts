@@ -1,3 +1,7 @@
+/**
+ * Guard 19: replace server-only File menu actions with local new/open/recent
+ * document flows that work in this browser-only build.
+ */
 import { t } from '@ranuts/shared/i18n';
 
 interface RecentDocumentItem {
@@ -9,6 +13,7 @@ interface RecentDocumentItem {
 }
 
 interface FileMenuHost extends Window {
+  __createNewDocument?: (type: 'docx' | 'xlsx' | 'pptx') => void;
   __openLocalDocument?: () => void;
   __listRecentDocuments?: () => Promise<RecentDocumentItem[]>;
   __openRecentDocument?: (id: string) => Promise<boolean>;
@@ -45,7 +50,7 @@ function relativeTime(timestamp: number, locale: string): string {
   }
 }
 
-function menuItem(doc: Document, id: string, label: string, icon: 'open' | 'recent'): HTMLLIElement {
+function menuItem(doc: Document, id: string, label: string, icon: 'new' | 'open' | 'recent'): HTMLLIElement {
   const item = doc.createElement('li');
   item.id = id;
   item.className = 'fm-btn local-file-menu-item';
@@ -68,6 +73,7 @@ function installStyles(doc: Document): void {
   style.setAttribute('data-local-file-menu-style', '');
   style.textContent = `
     #file-menu-panel .local-file-menu-icon { background-color: currentColor; background-image: none; mask: center / 18px 18px no-repeat; -webkit-mask: center / 18px 18px no-repeat; }
+    #file-menu-panel .local-file-menu-icon-new { mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M5 3h9l5 5v13H5V3Zm2 2v14h10V9h-4V5H7Zm4 6h2v2h2v2h-2v2h-2v-2H9v-2h2v-2Z'/%3E%3C/svg%3E"); -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M5 3h9l5 5v13H5V3Zm2 2v14h10V9h-4V5H7Zm4 6h2v2h2v2h-2v2h-2v-2H9v-2h2v-2Z'/%3E%3C/svg%3E"); }
     #file-menu-panel .local-file-menu-icon-open { mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M3 5h7l2 2h9v12H3V5Zm2 4v8h14V9H5Z'/%3E%3C/svg%3E"); -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M3 5h7l2 2h9v12H3V5Zm2 4v8h14V9H5Z'/%3E%3C/svg%3E"); }
     #file-menu-panel .local-file-menu-icon-recent { mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M12 3a9 9 0 1 1-8.2 5.3L2 7V3h4l-1 1a11 11 0 1 0 2-1.2L8 4.6A9 9 0 0 1 12 3Zm-1 4h2v5.2l3.5 2.1-1 1.7-4.5-2.7V7Z'/%3E%3C/svg%3E"); -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M12 3a9 9 0 1 1-8.2 5.3L2 7V3h4l-1 1a11 11 0 1 0 2-1.2L8 4.6A9 9 0 0 1 12 3Zm-1 4h2v5.2l3.5 2.1-1 1.7-4.5-2.7V7Z'/%3E%3C/svg%3E"); }
     #file-menu-panel #panel-local-recent { padding: 28px 30px; overflow: auto; }
@@ -83,7 +89,7 @@ function installStyles(doc: Document): void {
 }
 
 /**
- * Adds host-owned Open and Recent entries to the vendor File menu.
+ * Adds host-owned New, Open and Recent entries to the vendor File menu.
  * The guard only depends on the common File-menu DOM shared by Word, Sheet and
  * Slide, and is idempotent because the iframe preparation loop calls it often.
  */
@@ -96,6 +102,7 @@ export function installLocalFileMenu(win: Window): boolean {
   if (root.hasAttribute(MARKER)) return true;
 
   installStyles(doc);
+  const create = menuItem(doc, 'file-menu-local-new', t('editorNewDocument'), 'new');
   const open = menuItem(doc, 'file-menu-local-open', t('historyOpenFile'), 'open');
   const recent = menuItem(doc, 'file-menu-local-recent', t('editorRecentFiles'), 'recent');
   const divider = doc.createElement('li');
@@ -103,8 +110,8 @@ export function installLocalFileMenu(win: Window): boolean {
   divider.setAttribute('aria-hidden', 'true');
 
   const firstDivider = menu.querySelector('li.devider');
-  if (firstDivider) firstDivider.after(open, recent, divider);
-  else menu.prepend(open, recent, divider);
+  if (firstDivider) firstDivider.after(create, open, recent, divider);
+  else menu.prepend(create, open, recent, divider);
 
   const panel = doc.createElement('div');
   panel.id = 'panel-local-recent';
@@ -119,6 +126,12 @@ export function installLocalFileMenu(win: Window): boolean {
   context.append(panel);
 
   const host = win.parent as FileMenuHost;
+  const newDocumentType = (): 'docx' | 'xlsx' | 'pptx' => {
+    const editor = win as Window & { SSE?: unknown; PE?: unknown };
+    if (editor.SSE) return 'xlsx';
+    if (editor.PE) return 'pptx';
+    return 'docx';
+  };
   const hideCustomPanel = (): void => {
     panel.style.display = 'none';
     recent.classList.remove('active');
@@ -161,6 +174,10 @@ export function installLocalFileMenu(win: Window): boolean {
     }
   };
 
+  create.addEventListener('click', (event) => {
+    event.preventDefault();
+    host.__createNewDocument?.(newDocumentType());
+  });
   open.addEventListener('click', (event) => {
     event.preventDefault();
     host.__openLocalDocument?.();
@@ -173,7 +190,7 @@ export function installLocalFileMenu(win: Window): boolean {
     'click',
     (event) => {
       const item = (event.target as Element | null)?.closest('li.fm-btn');
-      if (item && item !== recent && item !== open) hideCustomPanel();
+      if (item && item !== recent && item !== open && item !== create) hideCustomPanel();
     },
     true,
   );

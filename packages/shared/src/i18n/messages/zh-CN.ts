@@ -423,6 +423,7 @@ export const zhCN: I18nMessages = {
   historyDownloadFailed: '这份副本没能保存到磁盘。',
   historyOnlyUnsaved: '只看未导出',
   historyOpenFile: '打开文件',
+  editorNewDocument: '创建一个新文档',
   editorRecentFiles: '最近打开',
   editorRecentFilesEmpty: '此浏览器还没有保存最近编辑的文件。',
   editorReplaceUnsavedConfirm: '打开其他文件会放弃尚未保存到电脑的更改。是否继续？',

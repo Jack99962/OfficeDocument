@@ -2,7 +2,7 @@ import 'fake-indexeddb/auto';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { beforeAll, describe, expect, it } from 'vitest';
-import { stashPendingFile, takePendingFile } from '../../lib/pending-open';
+import { createPendingOpenId, stashPendingFile, takePendingFile } from '../../lib/pending-open';
 
 /**
  * The landing-page handoff, both halves at once.
@@ -100,5 +100,20 @@ describe('landing page -> editor file handoff', () => {
     await openLocal.stashFile(sample());
     expect(await takePendingFile()).toBeInstanceOf(File);
     expect(await takePendingFile()).toBeNull();
+  });
+
+  it('keeps simultaneous tab handoffs isolated under unique keys', async () => {
+    const firstId = createPendingOpenId();
+    const secondId = createPendingOpenId();
+    const first = new File(['first'], 'first.docx');
+    const second = new File(['second'], 'second.xlsx');
+
+    expect(await Promise.all([stashPendingFile(first, firstId), stashPendingFile(second, secondId)])).toEqual([
+      true,
+      true,
+    ]);
+    expect((await takePendingFile(secondId))?.name).toBe('second.xlsx');
+    expect((await takePendingFile(firstId))?.name).toBe('first.docx');
+    expect(await takePendingFile(firstId)).toBeNull();
   });
 });

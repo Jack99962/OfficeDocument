@@ -15,9 +15,13 @@ const PORT = Number(process.env.E2E_PORT || 4173);
 const ISOLATED = Boolean(process.env.E2E_PORT);
 const OUT_DIR = ISOLATED ? `dist-e2e-${PORT}` : 'dist';
 const RESULTS_DIR = ISOLATED ? `test-results-${PORT}` : 'test-results';
+const CHROME_PATH = process.env.E2E_CHROME_PATH;
 
 export default defineConfig({
   testDir: 'test/e2e',
+  // Retained as historical coverage while the removed AI/WebMCP implementation
+  // is kept in source history; these product flows are no longer shipped.
+  testIgnore: [/(?:^|\/)(?:agent-|assistant-|pdf-agent-contract|webmcp)\.?.*\.spec\.ts$/],
   timeout: 30_000,
   expect: {
     timeout: 5_000,
@@ -29,12 +33,16 @@ export default defineConfig({
     baseURL: REMOTE || `http://127.0.0.1:${PORT}`,
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
+    video: process.env.E2E_NO_VIDEO ? 'off' : 'retain-on-failure',
   },
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'], viewport: { width: 1280, height: 900 } },
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1280, height: 900 },
+        ...(CHROME_PATH ? { launchOptions: { executablePath: CHROME_PATH } } : {}),
+      },
     },
   ],
   webServer: REMOTE

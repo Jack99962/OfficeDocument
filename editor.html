@@ -39,7 +39,8 @@
       // These are core editing resources only; export/print conversion remains
       // deferred until requested.
       try {
-        var ext = new URLSearchParams(location.search).get('new');
+        var params = new URLSearchParams(location.search);
+        var ext = params.get('new');
         var editor =
           ext === 'xlsx'
             ? 'spreadsheeteditor'
@@ -50,13 +51,22 @@
                 : '';
         var sdk = ext === 'xlsx' ? 'cell' : ext === 'pptx' ? 'slide' : ext === 'docx' ? 'word' : '';
         if (editor && sdk) {
-          [
+          var locale = (params.get('locale') || document.documentElement.lang || navigator.language || 'en')
+            .toLowerCase()
+            .split(/[-_]/)[0];
+          var urls = [
             '/web-apps/apps/' + editor + '/main/app.js',
             '/sdkjs/' + sdk + '/sdk-all-min.js',
+            '/sdkjs/' + sdk + '/sdk-all.js',
             '/web-apps/apps/' + editor + '/main/code.js',
             '/sdkjs/common/AllFonts.js',
-            '/web-apps/apps/' + editor + '/main/locale/zh.json',
-          ].forEach(function (url) {
+            '/web-apps/apps/' + editor + '/main/locale/' + locale + '.json',
+          ];
+          // The Chinese Word first paint otherwise waits on SDK -> font WASM
+          // serially. Large faces remain document-driven to avoid a 20 MB
+          // download for every blank document.
+          if (ext === 'docx' && locale === 'zh') urls.push('/sdkjs/common/libfont/engine/fonts.wasm');
+          urls.forEach(function (url) {
             fetch(url, { cache: 'force-cache', priority: 'high' }).catch(function () {});
           });
         }
@@ -99,21 +109,22 @@
       #openuse-loading .loading-content {
         width: 100%;
         max-width: 420px;
-        padding: 24px;
+        padding: var(--ran-space-6);
         text-align: center;
       }
       #openuse-loading .loading-logo {
         display: flex;
         height: 62px;
-        margin-bottom: 25px;
+        margin-bottom: calc(var(--ran-space-6) + 1px);
         align-items: flex-end;
         justify-content: center;
         gap: 1px;
       }
       #openuse-loading .loading-logo span {
+        --i: 0;
         display: inline-block;
         color: #1e293b;
-        font-size: 48px;
+        font-size: calc(var(--ran-text-heading-1) + var(--ran-space-4));
         font-weight: 750;
         letter-spacing: -2px;
         line-height: 1.2;
@@ -137,23 +148,23 @@
         }
       }
       #openuse-loading .loading-message {
-        margin: 0 0 9px;
+        margin: 0 0 calc(var(--ran-space-2) + 1px);
         color: #475569;
-        font-size: 15px;
+        font-size: calc(var(--ran-text-copy-1) - 1px);
         font-weight: 500;
         line-height: 1.7;
       }
       #openuse-loading .loading-hint {
         margin: 0;
         color: #94a3b8;
-        font-size: 13px;
+        font-size: var(--ran-text-label-2);
         line-height: 1.7;
       }
       #openuse-loading .loading-link {
         display: inline-block;
-        margin-top: 25px;
+        margin-top: calc(var(--ran-space-6) + 1px);
         color: #3478f6;
-        font-size: 13px;
+        font-size: var(--ran-text-label-2);
         text-decoration: none;
       }
       #openuse-loading .loading-link:hover {

@@ -71,20 +71,10 @@ test('the PWA install element is still defined and mounted after startup', async
   await expect.poll(() => page.evaluate(() => Boolean(customElements.get('pwa-install')))).toBe(true);
 });
 
-test('the select element is defined once the assistant opens, without being in startup', async ({ page }) => {
-  test.setTimeout(90_000);
-  await page.addInitScript(() => localStorage.setItem('document-assistant-enabled', 'true'));
+test('removed AI and WebMCP product surfaces are absent', async ({ page }) => {
   await page.goto('/editor?new=docx&locale=en');
-  await page.waitForFunction(() => Boolean(window.__ooFrames.readyEditor()));
-  expect(await page.evaluate(() => Boolean(customElements.get('r-select')))).toBe(false);
-  await page.frameLocator('iframe[name="frameEditor"]').locator('.agent-sidebar-entry').click();
-  // With no saved model the panel checks the model cache and may switch to
-  // settings by itself; the gear toggles, so only press it when it would open them.
-  const panel = page.locator('.agent-runtime-panel');
-  await expect(page.locator('.agent-model-cache > summary')).toContainText('(0)');
-  if ((await panel.getAttribute('data-view')) !== 'settings')
-    await page.locator('.agent-panel-settings-toggle').click();
-  await expect(panel).toHaveAttribute('data-view', 'settings');
-  await expect.poll(() => page.evaluate(() => Boolean(customElements.get('r-select')))).toBe(true);
-  await expect(page.locator('.agent-panel-settings r-select:visible').first()).toBeVisible();
+  await expect.poll(() => page.evaluate(() => Boolean(window.DocsAPI))).toBe(true);
+  expect(await page.evaluate(() => '__toggleAgentPanel' in window)).toBe(false);
+  expect(await page.evaluate(() => 'modelContext' in document || 'modelContext' in navigator)).toBe(false);
+  await expect(page.locator('.agent-runtime-panel, .agent-entry-shell')).toHaveCount(0);
 });

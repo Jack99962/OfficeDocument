@@ -13,6 +13,7 @@ afterEach(() => {
   resetPrefetchState();
   document.head.querySelectorAll('link[rel="prefetch"]').forEach((l) => l.remove());
   Object.defineProperty(navigator, 'connection', { configurable: true, value: undefined });
+  document.documentElement.lang = 'en';
   vi.restoreAllMocks();
 });
 
@@ -26,6 +27,9 @@ describe('editor asset prefetch', () => {
       'sdkjs/cell/sdk-all-min.js',
       'sdkjs/cell/sdk-all.js',
     ]);
+    expect(editorAssetUrls('docx')).not.toContain('sdkjs/common/libfont/engine/fonts.wasm');
+    document.documentElement.lang = 'zh-CN';
+    expect(editorAssetUrls('docx').at(-1)).toBe('sdkjs/common/libfont/engine/fonts.wasm');
   });
 
   it('predicts the editor from a file name (csv -> spreadsheet, pdf -> unknown)', () => {
@@ -35,7 +39,8 @@ describe('editor asset prefetch', () => {
     expect(editorKindForFile('scan.pdf')).toBeUndefined();
   });
 
-  it('adds one <link rel=prefetch as=script> per URL and never repeats a URL', () => {
+  it('adds typed prefetch links per URL and never repeats a URL', () => {
+    document.documentElement.lang = 'zh-CN';
     expect(prefetchEditorAssets('docx')).toHaveLength(editorAssetUrls('docx').length);
     expect(links()).toEqual(editorAssetUrls('docx'));
     expect(prefetchEditorAssets('docx')).toEqual([]);
@@ -44,6 +49,9 @@ describe('editor asset prefetch', () => {
     // count here had to be chased down separately.
     expect(prefetchEditorAssets('pptx')).toHaveLength(editorAssetUrls('pptx').length - 1);
     expect(document.head.querySelector('link[rel="prefetch"]')?.getAttribute('as')).toBe('script');
+    expect(document.head.querySelector('link[href="sdkjs/common/libfont/engine/fonts.wasm"]')?.getAttribute('as')).toBe(
+      'fetch',
+    );
   });
 
   it('respects Save-Data and 2G-class connections', () => {

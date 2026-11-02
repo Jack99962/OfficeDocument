@@ -448,6 +448,7 @@ export const ja: Partial<I18nMessages> = {
   historyDownloadFailed: 'そのコピーをディスクに保存できませんでした。',
   historyOnlyUnsaved: '未書き出し',
   historyOpenFile: 'ファイルを開く',
+  editorNewDocument: '新しいドキュメントを作成',
   editorRecentFiles: '最近使ったファイル',
   editorRecentFilesEmpty: 'このブラウザーには最近編集したファイルがまだ保存されていません。',
   editorReplaceUnsavedConfirm: '別のファイルを開くと、ディスクに保存されていない変更は破棄されます。続行しますか？',

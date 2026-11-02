@@ -18,22 +18,45 @@ describe('local editor File menu', () => {
   beforeEach(() => {
     document.head.querySelectorAll('[data-local-file-menu-style]').forEach((node) => node.remove());
     mountFileMenu();
+    delete (window as Window & { __createNewDocument?: (type: string) => void }).__createNewDocument;
     delete (window as Window & { __openLocalDocument?: () => void }).__openLocalDocument;
     delete (window as Window & { __listRecentDocuments?: () => Promise<unknown> }).__listRecentDocuments;
     delete (window as Window & { __openRecentDocument?: (id: string) => Promise<boolean> }).__openRecentDocument;
   });
 
-  it('adds Open and Recent once and delegates opening to the host', () => {
+  it('adds New, Open and Recent once and delegates actions to the host', () => {
+    const create = vi.fn();
     const open = vi.fn();
+    (window as Window & { __createNewDocument?: (type: string) => void }).__createNewDocument = create;
     (window as Window & { __openLocalDocument?: () => void }).__openLocalDocument = open;
 
     expect(installLocalFileMenu(window)).toBe(true);
     expect(installLocalFileMenu(window)).toBe(true);
+    expect(document.querySelectorAll('#file-menu-local-new')).toHaveLength(1);
     expect(document.querySelectorAll('#file-menu-local-open')).toHaveLength(1);
     expect(document.querySelectorAll('#file-menu-local-recent')).toHaveLength(1);
 
+    (document.querySelector('#file-menu-local-new a') as HTMLAnchorElement).click();
     (document.querySelector('#file-menu-local-open a') as HTMLAnchorElement).click();
+    expect(create).toHaveBeenCalledWith('docx');
     expect(open).toHaveBeenCalledOnce();
+  });
+
+  it('creates the matching document type from spreadsheet and presentation editors', () => {
+    const create = vi.fn();
+    (window as Window & { __createNewDocument?: (type: string) => void }).__createNewDocument = create;
+    (window as Window & { SSE?: boolean }).SSE = true;
+    installLocalFileMenu(window);
+    (document.querySelector('#file-menu-local-new a') as HTMLAnchorElement).click();
+    expect(create).toHaveBeenLastCalledWith('xlsx');
+
+    delete (window as Window & { SSE?: boolean }).SSE;
+    mountFileMenu();
+    (window as Window & { PE?: boolean }).PE = true;
+    installLocalFileMenu(window);
+    (document.querySelector('#file-menu-local-new a') as HTMLAnchorElement).click();
+    expect(create).toHaveBeenLastCalledWith('pptx');
+    delete (window as Window & { PE?: boolean }).PE;
   });
 
   it('renders recent browser history and reopens the chosen document', async () => {

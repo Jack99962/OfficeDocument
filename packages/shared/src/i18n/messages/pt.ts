@@ -452,6 +452,7 @@ export const pt: Partial<I18nMessages> = {
   historyDownloadFailed: 'Não foi possível salvar essa cópia no disco.',
   historyOnlyUnsaved: 'Não exportados',
   historyOpenFile: 'Abrir um arquivo',
+  editorNewDocument: 'Criar um novo documento',
   editorRecentFiles: 'Arquivos recentes',
   editorRecentFilesEmpty: 'Ainda não há arquivos editados recentemente salvos neste navegador.',
   editorReplaceUnsavedConfirm:

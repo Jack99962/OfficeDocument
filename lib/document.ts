@@ -10,6 +10,7 @@ import { showLoading } from './loading';
 import { startDocumentSession, newDocumentId } from './history/session';
 import { clearDocumentSession } from './history/autosave';
 import { rememberActiveSource, clearActiveSource } from './active-document-source';
+import { editorKindForFile, prefetchEditorAssets } from './prefetch';
 
 // Import UI functions with type-only to avoid circular dependency
 // These will be passed as callbacks or called after document operations
@@ -30,6 +31,7 @@ export function setUICallbacks(callbacks: { hideControlPanel: () => void; showCo
 // (fileInput.click() below), which display: none does not prevent.
 const fileInput = View('input')
   .attr('type', 'file')
+  .attr('multiple', '')
   // Must stay in step with DOCUMENT_TYPE_MAP (@ranuts/shared/document-utils): the
   // engine reads OpenDocument and the legacy text formats too, and leaving them
   // out here greys them out in the picker for no reason -- the file the user was
@@ -133,17 +135,37 @@ export const onOpenDocument = (): void => {
 
   // Define the change handler
   const handleChange = async (event: Event) => {
-    const file = (event.target as HTMLInputElement).files?.[0];
+    const files = Array.from((event.target as HTMLInputElement).files ?? []);
+    // Reserve tabs while the file-picker activation is still live. Opening
+    // them after IndexedDB/conversion awaits is treated as a popup by Safari
+    // and Chromium. A blocked reservation is retried after the handoff.
+    const additionalTabs = files.slice(1).map(() => window.open('about:blank', '_blank'));
 
     // Clear the handler to prevent multiple triggers
     fileInput.onchange = null;
 
     // Only process if a file was actually selected
     // If user cancelled, onchange won't fire, nothing happens
-    if (file) {
+    if (files.length) {
+      prefetchEditorAssets(editorKindForFile(files[0].name));
       // The open path already reports failure. A DOM event has no caller to
       // receive its rejection, unlike tools and recovery operations.
+      const [file, ...additionalFiles] = files;
       await openLocalFile(file).catch(() => {});
+      if (additionalFiles.length) {
+        const { createPendingOpenId, stashPendingFile } = await import('./pending-open');
+        for (const [index, additionalFile] of additionalFiles.entries()) {
+          const id = createPendingOpenId();
+          if (await stashPendingFile(additionalFile, id)) {
+            const href = `/editor?open=${encodeURIComponent(id)}`;
+            const tab = additionalTabs[index];
+            if (tab) tab.location.href = href;
+            else window.open(href, '_blank', 'noopener');
+          } else {
+            additionalTabs[index]?.close();
+          }
+        }
+      }
       // Clear file selection so the same file can be selected again
       fileInput.value = '';
     }

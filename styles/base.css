@@ -1,5 +1,3 @@
-@import './assistant.css';
-
 /* No CSS framework here: every design VALUE comes from the ranui token layer
    (public/ran-tokens.css) and every piece of UI chrome is a real ranui component.
    Tailwind used to be imported for its preflight plus exactly two utilities
@@ -150,21 +148,22 @@ body.landing-active #app {
 .loading-content {
   width: 100%;
   max-width: 420px;
-  padding: 24px;
+  padding: var(--ran-space-6);
   text-align: center;
 }
 .loading-logo {
   display: flex;
   height: 62px;
-  margin-bottom: 25px;
+  margin-bottom: calc(var(--ran-space-6) + 1px);
   align-items: flex-end;
   justify-content: center;
   gap: 1px;
 }
 .loading-logo span {
+  --i: 0;
   display: inline-block;
   color: #1e293b;
-  font-size: 48px;
+  font-size: calc(var(--ran-text-heading-1) + var(--ran-space-4));
   font-weight: 750;
   letter-spacing: -2px;
   line-height: 1.2;
@@ -188,23 +187,23 @@ body.landing-active #app {
   }
 }
 .loading-message {
-  margin: 0 0 9px;
+  margin: 0 0 calc(var(--ran-space-2) + 1px);
   color: #475569;
-  font-size: 15px;
+  font-size: calc(var(--ran-text-copy-1) - 1px);
   font-weight: 500;
   line-height: 1.7;
 }
 .loading-hint {
   margin: 0;
   color: #94a3b8;
-  font-size: 13px;
+  font-size: var(--ran-text-label-2);
   line-height: 1.7;
 }
 .loading-link {
   display: inline-block;
-  margin-top: 25px;
+  margin-top: calc(var(--ran-space-6) + 1px);
   color: #3478f6;
-  font-size: 13px;
+  font-size: var(--ran-text-label-2);
   text-decoration: none;
 }
 .loading-link:hover {

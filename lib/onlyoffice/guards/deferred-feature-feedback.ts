@@ -1,3 +1,7 @@
+/**
+ * Guard 20: explain the first-use delay for export/print while the deferred
+ * conversion runtime is still loading.
+ */
 interface DeferredFeatureHost extends Window {
   __notifyDeferredFeature?: () => void;
 }

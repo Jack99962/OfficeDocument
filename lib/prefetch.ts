@@ -25,6 +25,7 @@ const APP_DIR: Record<EditorKind, string> = {
 const SDK_DIR: Record<EditorKind, string> = { docx: 'word', xlsx: 'cell', pptx: 'slide' };
 
 const API_LOADER = 'web-apps/apps/api/documents/api.js';
+const WORD_FIRST_PAINT = ['sdkjs/common/libfont/engine/fonts.wasm'];
 
 const requested = new Set<string>();
 
@@ -52,6 +53,10 @@ export function editorAssetUrls(kind?: EditorKind): string[] {
       `sdkjs/${SDK_DIR[kind]}/sdk-all-min.js`,
       `sdkjs/${SDK_DIR[kind]}/sdk-all.js`,
     );
+    // Word cannot paint common Chinese documents until the font engine and
+    // Noto Sans SC regular/bold faces arrive. Starting these beside the SDK
+    // removes the otherwise serial SDK -> WASM -> two large-font waterfall.
+    if (kind === 'docx' && document.documentElement.lang.toLowerCase().startsWith('zh')) urls.push(...WORD_FIRST_PAINT);
   }
   return urls;
 }
@@ -78,7 +83,9 @@ export function prefetchEditorAssets(kind?: EditorKind): string[] {
     requested.add(url);
     const link = document.createElement('link');
     link.rel = 'prefetch';
-    link.setAttribute('as', 'script');
+    const isScript = url.endsWith('.js');
+    link.setAttribute('as', isScript ? 'script' : 'fetch');
+    if (!isScript) link.crossOrigin = 'anonymous';
     link.href = url;
     document.head.appendChild(link);
     added.push(url);

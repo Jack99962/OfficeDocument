@@ -6,6 +6,14 @@ const DB_NAME = 'document-handoff';
 const STORE = 'files';
 const KEY = 'pending';
 
+/** A separate key lets several editor tabs consume files without racing. */
+export const createPendingOpenId = (): string => {
+  const random = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  return `pending-${random}`;
+};
+
+const safeKey = (id?: string): string => (id?.startsWith('pending-') ? id : KEY);
+
 /**
  * What is actually stored: the bytes plus the File fields the app needs back.
  *
@@ -66,21 +74,22 @@ const toRecord = async (file: File): Promise<PendingRecord> => ({
  * page that deliberately does not load the editor bundle, so it cannot open a
  * file itself), and the DB/store/key names belong to this module.
  */
-export const stashPendingFile = async (file: File): Promise<boolean> => {
+export const stashPendingFile = async (file: File, id?: string): Promise<boolean> => {
+  const key = safeKey(id);
   if (typeof indexedDB === 'undefined') return false;
   // By reference first, bytes only if the store will not keep a File, and the
   // write is confirmed rather than trusted -- the same decision, spelled out,
   // in public/open-local.js.
-  if ((await put(file)) && (await peek()) instanceof Blob) return true;
+  if ((await put(file, key)) && (await peek(key)) instanceof Blob) return true;
   try {
-    return await put(await toRecord(file));
+    return await put(await toRecord(file), key);
   } catch {
     return false;
   }
 };
 
 /** Whatever is under the handoff key right now. Null when it cannot be read. */
-const peek = (): Promise<unknown> =>
+const peek = (key = KEY): Promise<unknown> =>
   new Promise((resolve) => {
     let req: IDBOpenDBRequest;
     try {
@@ -96,7 +105,7 @@ const peek = (): Promise<unknown> =>
     req.onsuccess = () => {
       const db = req.result;
       try {
-        const read = db.transaction(STORE, 'readonly').objectStore(STORE).get(KEY);
+        const read = db.transaction(STORE, 'readonly').objectStore(STORE).get(key);
         read.onsuccess = () => {
           db.close();
           resolve(read.result);
@@ -113,7 +122,7 @@ const peek = (): Promise<unknown> =>
   });
 
 /** Put one value under the handoff key. Resolves false rather than throwing. */
-const put = (value: File | PendingRecord): Promise<boolean> =>
+const put = (value: File | PendingRecord, key = KEY): Promise<boolean> =>
   new Promise((resolve) => {
     let req: IDBOpenDBRequest;
     try {
@@ -130,7 +139,7 @@ const put = (value: File | PendingRecord): Promise<boolean> =>
       const db = req.result;
       try {
         const tx = db.transaction(STORE, 'readwrite');
-        tx.objectStore(STORE).put(value, KEY);
+        tx.objectStore(STORE).put(value, key);
         tx.oncomplete = () => {
           db.close();
           resolve(true);
@@ -148,7 +157,8 @@ const put = (value: File | PendingRecord): Promise<boolean> =>
 
 /** Read and delete the pending handoff file. Resolves null when there is none
  *  (stale `?open=local` URL, reload after consumption) or IndexedDB is unusable. */
-export const takePendingFile = (): Promise<File | null> => {
+export const takePendingFile = (id?: string): Promise<File | null> => {
+  const key = safeKey(id);
   return new Promise((resolve) => {
     if (typeof indexedDB === 'undefined') {
       resolve(null);
@@ -172,10 +182,10 @@ export const takePendingFile = (): Promise<File | null> => {
       try {
         const tx = db.transaction(STORE, 'readwrite');
         const store = tx.objectStore(STORE);
-        const get = store.get(KEY);
+        const get = store.get(key);
         get.onsuccess = () => {
           const value = get.result;
-          store.delete(KEY);
+          store.delete(key);
           tx.oncomplete = () => {
             db.close();
             resolve(toFile(value));

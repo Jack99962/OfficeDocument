@@ -15,6 +15,8 @@ export default defineConfig({
     globals: true,
     setupFiles: ['test/setup/vitest.ts'],
     include: ['test/unit/**/*.test.ts'],
+    // Historical tests for product surfaces removed from the shipped editor.
+    exclude: ['test/unit/assistant-offline.test.ts', 'test/unit/sw-assistant-reuse.test.ts'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html', 'lcov'],

@@ -297,12 +297,18 @@
 
   function formatUrls(kind) {
     if (!kind || !APP[kind]) return [];
-    return [
+    var urls = [
       '/web-apps/apps/' + APP[kind] + '/main/app.js',
       '/web-apps/apps/' + APP[kind] + '/main/code.js',
       '/sdkjs/' + SDK[kind] + '/sdk-all-min.js',
       '/sdkjs/' + SDK[kind] + '/sdk-all.js',
     ];
+    if (
+      kind === 'docx' &&
+      ((document.documentElement && document.documentElement.lang) || '').toLowerCase().indexOf('zh') === 0
+    )
+      urls.push('/sdkjs/common/libfont/engine/fonts.wasm');
+    return urls;
   }
 
   function prefetchOnIntent(kind) {

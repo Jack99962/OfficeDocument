@@ -38,6 +38,19 @@ import { startDocumentSession } from '../../lib/history/session';
 import { rememberActiveSource, readActiveSource } from '../../lib/active-document-source';
 import { restoreSavedDocument } from '../../lib/history/recovery';
 
+it('removes one-shot open parameters when assigning the document identity', () => {
+  window.history.replaceState(
+    null,
+    '',
+    '/editor?new=docx&file=https%3A%2F%2Fexample.test%2Fold.docx&src=old&open=local&locale=en',
+  );
+  startDocumentSession({ docId: 'opened-file', title: 'Report.docx', origin: 'local' });
+  const params = new URL(window.location.href).searchParams;
+  expect(params.get('saved')).toBe('opened-file');
+  expect(params.get('locale')).toBe('en');
+  for (const name of ['new', 'file', 'src', 'open']) expect(params.has(name)).toBe(false);
+});
+
 const file = () => new File([new Uint8Array([1, 2, 3])], 'Report.docx');
 
 beforeEach(() => {

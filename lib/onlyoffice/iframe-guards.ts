@@ -16,7 +16,6 @@ import { installHintFallbackGuard } from './guards/hint-fallback';
 import { installAboutSourceNotice } from './guards/about-source';
 import { installBadImageUrlGuard } from './guards/bad-image-url';
 import { installX2tWorkerProxy } from './guards/x2t-worker';
-import { installAssistantFocusGuard } from './guards/assistant-focus';
 import { installLocalFileMenu } from './guards/file-menu';
 import { installDeferredFeatureFeedback } from './guards/deferred-feature-feedback';
 
@@ -48,7 +47,6 @@ export function prepareEditorIframe(): boolean {
 
       installOpenFailureGuard(win);
       injectLocalChromeCss(doc);
-      const assistantFocusGuarded = installAssistantFocusGuard(win);
 
       const sharedWorkerShadowed = shadowSharedWorker(win);
       const fetchFontsGuarded = installFetchFontsGuard(win);
@@ -79,7 +77,6 @@ export function prepareEditorIframe(): boolean {
         longActionGuarded &&
         x2tWorkerProxied &&
         wasmBinaryHandled &&
-        assistantFocusGuarded &&
         localFileMenuInstalled &&
         deferredFeatureFeedbackInstalled
       ) {

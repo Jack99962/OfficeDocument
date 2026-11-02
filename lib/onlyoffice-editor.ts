@@ -2,6 +2,7 @@ import { isEmbedMode } from './embed-mode';
 import { getDocumentCloseRevision } from './document-open';
 import 'ranui/message';
 import { waitForAppWorkerControl } from './offline-worker-control';
+import { markEditorStartup } from './startup-performance';
 import { getOnlyOfficeLang, t } from '@ranuts/shared/i18n';
 import { DOCUMENT_TYPE_MAP } from '@ranuts/shared/document-utils';
 import { prepareEditorIframe } from './onlyoffice/iframe-guards';
@@ -220,6 +221,7 @@ function createPersonalEditorInstance(config: {
     },
     events: {
       onAppReady: () => {
+        markEditorStartup('frame-ready');
         markEditorFrameReady();
         // The pdf editor's offline path differs from word/cell/slide: those
         // apps' Offline controllers fetch document.url and convert it
@@ -245,6 +247,7 @@ function createPersonalEditorInstance(config: {
         window.setTimeout(() => window.clearInterval(timer), 15_000);
       },
       onDocumentReady: () => {
+        markEditorStartup('content-ready');
         markDocumentContentReady();
         window.dispatchEvent(new Event('document:content-ready'));
         // The open succeeded, so the retry budget is spent and the bytes kept
@@ -432,14 +435,19 @@ export async function loadEditorApi(): Promise<void> {
   return new Promise((resolve, reject) => {
     // Check if already loaded
     if (window.DocsAPI) {
+      markEditorStartup('api-ready');
       resolve();
       return;
     }
 
     // Load editor API
     const script = document.createElement('script');
+    markEditorStartup('api-request');
     script.src = './web-apps/apps/api/documents/api.js';
-    script.onload = () => resolve();
+    script.onload = () => {
+      markEditorStartup('api-ready');
+      resolve();
+    };
     script.onerror = (error) => {
       console.error('Failed to load OnlyOffice API:', error);
       alert(t('failedToLoadEditor'));

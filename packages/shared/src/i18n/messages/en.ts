@@ -451,6 +451,7 @@ export const en: I18nMessages = {
   historyDownloadFailed: 'That copy could not be saved to disk.',
   historyOnlyUnsaved: 'Not exported',
   historyOpenFile: 'Open a file',
+  editorNewDocument: 'Create a new document',
   editorRecentFiles: 'Recent files',
   editorRecentFilesEmpty: 'No recently edited files are stored in this browser yet.',
   editorReplaceUnsavedConfirm: 'Opening another file will discard changes that have not been saved to disk. Continue?',

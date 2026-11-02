@@ -34,6 +34,12 @@ export function stampDocumentIdInUrl(docId: string): void {
   // `open=local` hands a file over exactly once; leaving it in the URL would
   // make a reload look for a file that was already consumed.
   url.searchParams.delete('open');
+  // These are also one-shot open instructions. Keeping `new=docx` beside a
+  // saved id makes a reload create a blank document instead of restoring the
+  // file the user actually opened; `file`/`src` similarly replay a remote open.
+  url.searchParams.delete('new');
+  url.searchParams.delete('file');
+  url.searchParams.delete('src');
   window.history.replaceState(null, '', url);
 }
 

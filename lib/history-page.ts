@@ -22,7 +22,7 @@ import { applyDocumentLanguage, getLanguage, localeHomePath, t, withLocale } fro
 import { getDocumentMimeType } from '@ranuts/shared/document-utils';
 import { formatRelativeTime } from './history/relative-time';
 import { clearAllHistory, deleteDoc, getLatestSnapshot, historyUsage, listDocs, pruneExpired } from './history/store';
-import { stashPendingFile } from './pending-open';
+import { createPendingOpenId, stashPendingFile } from './pending-open';
 import { isAutosaveEnabled, writeAutosavePreference } from './history/preferences';
 import { daysUntilExpiry, hasUnsavedWork, type HistoryDoc } from './history/types';
 import { confirmDialog } from './confirm-dialog';
@@ -109,15 +109,39 @@ async function downloadDoc(doc: HistoryDoc): Promise<void> {
 function pickAndOpenFile(): void {
   const input = document.createElement('input');
   input.type = 'file';
+  input.multiple = true;
   // Same list the app's own picker offers (lib/document.ts).
   input.accept = '.docx,.xlsx,.pptx,.doc,.xls,.ppt,.csv,.pdf';
   input.style.display = 'none';
   input.addEventListener('change', () => {
-    const file = input.files?.[0];
+    const files = Array.from(input.files ?? []);
+    const additionalTabs = files.slice(1).map(() => window.open('about:blank', '_blank'));
     input.remove();
-    if (!file) return;
-    void stashPendingFile(file).then((stashed) => {
-      window.location.href = stashed ? '/editor?open=local' : '/editor';
+    if (!files.length) return;
+    void Promise.all(
+      files.map(async (file, index) => {
+        const id = index === 0 ? 'local' : createPendingOpenId();
+        return { id, index, stashed: await stashPendingFile(file, id) };
+      }),
+    ).then((results) => {
+      const opened = results.filter((item) => item.stashed);
+      if (!opened.length) {
+        window.location.href = '/editor';
+        return;
+      }
+      const current = opened[0];
+      if (current.index > 0) additionalTabs[current.index - 1]?.close();
+      for (const item of opened.slice(1)) {
+        const href = `/editor?open=${encodeURIComponent(item.id)}`;
+        const tab = item.index > 0 ? additionalTabs[item.index - 1] : null;
+        if (tab) tab.location.href = href;
+        else window.open(href, '_blank', 'noopener');
+      }
+      const usedIndexes = new Set(opened.slice(1).map((item) => item.index));
+      additionalTabs.forEach((tab, index) => {
+        if (!usedIndexes.has(index + 1) && index + 1 !== current.index) tab?.close();
+      });
+      window.location.href = `/editor?open=${encodeURIComponent(current.id)}`;
     });
   });
   document.body.appendChild(input);

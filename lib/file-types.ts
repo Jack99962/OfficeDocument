@@ -26,6 +26,7 @@ export const oAscFileType = {
   DOCX_PACKAGE: 84,
   OFORM: 85,
   DOCXF: 86,
+  MD: 92,
   DOCY: 4097,
   CANVAS_WORD: 8193,
   JSON: 2056,

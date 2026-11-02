@@ -12,7 +12,7 @@
   var KEY = 'pending';
 
   /** Put one value under the handoff key, resolving when the write commits. */
-  function put(value) {
+  function put(value, key) {
     return new Promise(function (resolve, reject) {
       var req = indexedDB.open(DB_NAME, 1);
       req.onupgradeneeded = function () {
@@ -25,7 +25,7 @@
         var db = req.result;
         var tx = db.transaction(STORE, 'readwrite');
         try {
-          tx.objectStore(STORE).put(value, KEY);
+          tx.objectStore(STORE).put(value, key || KEY);
         } catch (error) {
           db.close();
           reject(error);
@@ -57,7 +57,7 @@
   }
 
   /** Read back whatever is under the handoff key. */
-  function get() {
+  function get(key) {
     return new Promise(function (resolve, reject) {
       var req = indexedDB.open(DB_NAME, 1);
       req.onupgradeneeded = function () {
@@ -68,7 +68,7 @@
       };
       req.onsuccess = function () {
         var db = req.result;
-        var read = db.transaction(STORE, 'readonly').objectStore(STORE).get(KEY);
+        var read = db.transaction(STORE, 'readonly').objectStore(STORE).get(key || KEY);
         read.onsuccess = function () {
           db.close();
           resolve(read.result);
@@ -105,23 +105,23 @@
    *
    * lib/pending-open.ts reads both shapes back.
    */
-  function stashBytes(file) {
-    return toRecord(file).then(put);
+  function stashBytes(file, key) {
+    return toRecord(file).then(function (record) { return put(record, key); });
   }
 
-  function stashFile(file) {
+  function stashFile(file, key) {
     // Two-argument `then`, not `.catch`: a `.catch` hung off the end would
     // also catch the fallback failing and run it a second time, reading the
     // document into memory twice over on the one path where memory is already
     // the thing going wrong.
-    return put(file)
-      .then(get)
+    return put(file, key)
+      .then(function () { return get(key); })
       .then(
         function (stored) {
-          return stored instanceof Blob ? undefined : stashBytes(file);
+          return stored instanceof Blob ? undefined : stashBytes(file, key);
         },
         function () {
-          return stashBytes(file);
+          return stashBytes(file, key);
         },
       );
   }
@@ -148,6 +148,7 @@
 
     var input = document.createElement('input');
     input.type = 'file';
+    input.multiple = true;
     // Keep in sync with the app's picker (lib/document.ts).
     input.accept = '.docx,.xlsx,.pptx,.doc,.xls,.ppt,.csv,.pdf';
     input.style.display = 'none';
@@ -164,10 +165,22 @@
     });
 
     input.addEventListener('change', function () {
-      var file = input.files && input.files[0];
-      if (!file) return;
-      stashFile(file).then(
-        function () {
+      var files = Array.prototype.slice.call(input.files || []);
+      if (!files.length) return;
+      var extraTabs = files.slice(1).map(function () {
+        return typeof window.open === 'function' ? window.open('about:blank', '_blank') : null;
+      });
+      var entries = files.map(function (file, index) {
+        var id = index === 0 ? KEY : 'pending-' + Date.now() + '-' + Math.random().toString(36).slice(2);
+        return stashFile(file, id).then(function () { return id; });
+      });
+      Promise.all(entries).then(
+        function (ids) {
+          ids.slice(1).forEach(function (id, index) {
+            var href = '/editor?open=' + encodeURIComponent(id);
+            if (extraTabs[index]) extraTabs[index].location.href = href;
+            else if (typeof window.open === 'function') window.open(href, '_blank', 'noopener');
+          });
           return navigate(targetHref);
         },
         function () {
