@@ -435,6 +435,8 @@ export const ko: Partial<I18nMessages> = {
   historyDownload: '다운로드',
   historyDownloadFailed: '해당 사본을 디스크에 저장하지 못했습니다.',
   historyOnlyUnsaved: '내보내지 않음',
+  editorSaveToComputer: 'Save to computer',
+  editorSavedInBrowser: 'Saved in this browser',
   historyOpenFile: '파일 열기',
   editorNewDocument: '새 문서 만들기',
   editorRecentFiles: '최근 파일',

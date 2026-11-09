@@ -42,6 +42,35 @@ describe('local editor File menu', () => {
     expect(open).toHaveBeenCalledOnce();
   });
 
+  it('restores Open after the vendor rerenders the menu without another preparation pass', async () => {
+    const open = vi.fn();
+    (window as Window & { __openLocalDocument?: () => void }).__openLocalDocument = open;
+    installLocalFileMenu(window);
+    const menu = document.querySelector('.panel-menu')!;
+    menu.innerHTML = '<li class="devider"></li><li class="fm-btn" id="print"><a href="#">Print</a></li>';
+
+    await vi.waitFor(() => expect(document.querySelectorAll('#file-menu-local-open')).toHaveLength(1));
+    expect(document.querySelectorAll('#panel-local-recent')).toHaveLength(1);
+    (document.querySelector('#file-menu-local-open a') as HTMLAnchorElement).click();
+    expect(open).toHaveBeenCalledOnce();
+  });
+
+  it('exports the current format only when Save to computer is clicked', () => {
+    const download = vi.fn();
+    const Options = class {
+      constructor(public fileType: number) {}
+    };
+    (window as any).Asc = {
+      editor: { documentFormatSave: 65, asc_DownloadAs: download },
+      asc_CDownloadOptions: Options,
+    };
+    installLocalFileMenu(window);
+    expect(download).not.toHaveBeenCalled();
+    (document.querySelector('#file-menu-local-save-computer a') as HTMLAnchorElement).click();
+    expect(download).toHaveBeenCalledWith(expect.objectContaining({ fileType: 65 }));
+    delete (window as any).Asc;
+  });
+
   it('creates the matching document type from spreadsheet and presentation editors', () => {
     const create = vi.fn();
     (window as Window & { __createNewDocument?: (type: string) => void }).__createNewDocument = create;

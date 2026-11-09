@@ -9,9 +9,8 @@
  * coordinated patches, mirroring what the SDK itself does for the desktop
  * offline mode:
  * 5a. kill the autosave loop (gap 0 makes _autoSave a no-op);
- * 5b. route user-initiated asc_Save (Save button / Ctrl+S) to asc_DownloadAs
- *    in the document's own format, which produces the onlyoffice-file-stream
- *    our save UX consumes. Autosave-flagged calls keep the original path so
+ * 5b. route user-initiated asc_Save (Save button / Ctrl+S) to browser storage.
+ *    Explicit Download As / Save to computer actions keep the disk path. Autosave-flagged calls keep the original path so
  *    nothing else changes.
  */
 import { installSaveStreamTracking } from '../save-stream';
@@ -55,7 +54,6 @@ export function installServerlessSaveSemantics(win: Window): boolean {
     };
     const origSave = saveApi.asc_Save;
     const origDownloadAs = saveApi.asc_DownloadAs;
-    const DownloadOptions = saveWin.Asc.asc_CDownloadOptions;
     if (typeof origDownloadAs === 'function') {
       saveApi.asc_DownloadAs = function (options: unknown) {
         const fileType = (options as { fileType?: number } | null)?.fileType;
@@ -83,15 +81,12 @@ export function installServerlessSaveSemantics(win: Window): boolean {
     }
     saveApi.asc_Save = function (isAutoSave?: boolean, isUndoRequest?: boolean) {
       if (isAutoSave) return origSave.call(this, isAutoSave, isUndoRequest);
-      const format = typeof this.documentFormatSave === 'number' ? this.documentFormatSave : undefined;
-      if (format === undefined || typeof this.asc_DownloadAs !== 'function') {
-        return origSave.call(this, isAutoSave, isUndoRequest);
-      }
-      this.asc_DownloadAs(new DownloadOptions(format));
+      const host = saveWin.parent as Window & { __saveDocumentToBrowser?: () => Promise<void> };
+      void host.__saveDocumentToBrowser?.();
       return true;
     };
     saveWin.__ooServerlessSavePatched = true;
-    console.log('[OO] serverless save semantics installed (autosave loop off, Save/Ctrl+S -> download stream)');
+    console.log('[OO] serverless save semantics installed (autosave loop off, Save/Ctrl+S -> browser storage)');
   }
   return Boolean(saveWin.__ooServerlessSavePatched) && installSaveStreamTracking(win);
 }

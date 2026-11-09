@@ -450,6 +450,8 @@ export const en: I18nMessages = {
   historyDownload: 'Download',
   historyDownloadFailed: 'That copy could not be saved to disk.',
   historyOnlyUnsaved: 'Not exported',
+  editorSaveToComputer: 'Save to computer',
+  editorSavedInBrowser: 'Saved in this browser',
   historyOpenFile: 'Open a file',
   editorNewDocument: 'Create a new document',
   editorRecentFiles: 'Recent files',

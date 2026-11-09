@@ -13,7 +13,7 @@ vi.mock('../../lib/history/autosave', () => ({
 }));
 import { rememberActiveSource, readActiveSource } from '../../lib/active-document-source';
 import { restoreSavedDocument } from '../../lib/history/recovery';
-import { initDocumentHistory } from '../../lib/history/index';
+import { initDocumentHistory, saveDocumentToBrowser } from '../../lib/history/index';
 import { getDoc, putSnapshot, deleteDoc } from '../../lib/history/store';
 import { resetHistoryDbForTests } from '../../lib/history/db';
 import { resetSaveTargetsForTests } from '../../lib/save-target';
@@ -440,4 +440,22 @@ it('keeps saved source provenance across two reloads from a stale inherited poin
     expect(new Uint8Array(await recovered.arrayBuffer())).toEqual(new Uint8Array([1, 2, 3]));
     await rememberActiveSource('save-document', recovered);
   }
+});
+
+it('persists ordinary Save in browser history without a disk picker', async () => {
+  const picker = vi.fn();
+  vi.stubGlobal('showSaveFilePicker', picker);
+  const { markDocumentContentReady, resetOpenState } = await import('../../lib/onlyoffice/open-state');
+  resetOpenState();
+  markDocumentContentReady();
+  window.editor = { downloadAs: vi.fn() } as any;
+  Object.assign((frame.contentWindow as any).Asc.editor, { isLoadFullApi: true, isDocumentLoadComplete: true });
+  const saved = saveDocumentToBrowser();
+  await vi.waitFor(() => expect(conversions).toHaveLength(1));
+  await sendFile(false);
+  await saved;
+  expect(picker).not.toHaveBeenCalled();
+  expect(history.Reset_SavedIndex).toHaveBeenCalled();
+  expect(hasUnsavedChanges()).toBe(false);
+  expect((await getDoc('save-document'))?.revCount).toBe(2);
 });

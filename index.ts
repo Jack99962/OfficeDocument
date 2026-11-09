@@ -72,8 +72,7 @@ const appWorkerRegistration =
 initEvents();
 initEmbedApi();
 
-// Warn before an accidental close/reload throws away edits that never reached
-// the user's disk. No-op in embed mode -- the host page owns that UX.
+// Warn before an accidental close/reload throws away edits that have not been saved. No-op in embed mode -- the host page owns that UX.
 installUnsavedChangesGuard();
 
 // Local history: keep the recovery points in step with what reaches the disk.

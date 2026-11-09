@@ -447,6 +447,8 @@ export const ja: Partial<I18nMessages> = {
   historyDownload: 'ダウンロード',
   historyDownloadFailed: 'そのコピーをディスクに保存できませんでした。',
   historyOnlyUnsaved: '未書き出し',
+  editorSaveToComputer: 'Save to computer',
+  editorSavedInBrowser: 'Saved in this browser',
   historyOpenFile: 'ファイルを開く',
   editorNewDocument: '新しいドキュメントを作成',
   editorRecentFiles: '最近使ったファイル',

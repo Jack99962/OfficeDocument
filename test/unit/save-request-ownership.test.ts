@@ -107,7 +107,7 @@ it.each(['snapshot first', 'manual first'])('preserves the manual disk save when
   markDocumentContentReady();
   const snapshot = requestSaveDocument('DOCX');
   await vi.advanceTimersByTimeAsync(0);
-  api.asc_Save(false);
+  api.asc_DownloadAs();
   expect(conversions).toHaveLength(2);
   for (const index of order === 'snapshot first' ? [0, 1] : [1, 0]) {
     conversions[index].finish({ binary: new Uint8Array(index === 0 ? [1] : [2, 2]) });
@@ -176,7 +176,7 @@ it('keeps a PDF request attached to native CheckPrint resumption while manual sa
   await vi.advanceTimersByTimeAsync(0);
   expect(conversions).toHaveLength(0);
   expect(drawing.m_arPrintingWaitEndRecalculate).toHaveLength(2);
-  native.asc_Save(false);
+  native.asc_DownloadAs({ fileType: 65 });
   conversions[0].finish({ binary: new Uint8Array([2, 2]) });
   await vi.advanceTimersByTimeAsync(0);
   drawing.m_bIsDocumentCalculating = false;
@@ -186,4 +186,16 @@ it('keeps a PDF request attached to native CheckPrint resumption while manual sa
   await vi.advanceTimersByTimeAsync(0);
   expect(outcome).toMatchObject({ name: 'A.pdf', size: 1 });
   expect(writes.map((file) => [file.name, file.size])).toEqual([['A.docx', 2]]);
+});
+
+it('routes toolbar Save to browser storage without starting a disk export', () => {
+  const save = vi.fn(async () => {});
+  (frame.contentWindow!.parent as Window & { __saveDocumentToBrowser?: () => Promise<void> }).__saveDocumentToBrowser =
+    save;
+  api.asc_Save(false);
+  expect(save).toHaveBeenCalledOnce();
+  expect(conversions).toHaveLength(0);
+  expect(writes).toHaveLength(0);
+  delete (frame.contentWindow!.parent as Window & { __saveDocumentToBrowser?: () => Promise<void> })
+    .__saveDocumentToBrowser;
 });

@@ -19,7 +19,8 @@ interface FileMenuHost extends Window {
   __openRecentDocument?: (id: string) => Promise<boolean>;
 }
 
-const MARKER = 'data-local-file-menu';
+const watchedDocuments = new WeakSet<Document>();
+const menuCleanups = new WeakMap<HTMLElement, () => void>();
 
 function formatSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
@@ -95,23 +96,39 @@ function installStyles(doc: Document): void {
  */
 export function installLocalFileMenu(win: Window): boolean {
   const doc = win.document;
+  // Vendor views can render lazily or replace the menu after document loading.
+  // Keep watching after the preparation timer stops, and check the actual nodes
+  // rather than a marker on the persistent outer panel.
+  if (!watchedDocuments.has(doc)) {
+    const Observer = (win as Window & { MutationObserver: typeof MutationObserver }).MutationObserver;
+    const observer = new Observer(() => installLocalFileMenu(win));
+    observer.observe(doc.body, { childList: true, subtree: true });
+    watchedDocuments.add(doc);
+  }
   const root = doc.querySelector<HTMLElement>('#file-menu-panel');
   const menu = root?.querySelector<HTMLElement>('.panel-menu');
   const context = root?.querySelector<HTMLElement>('.panel-context');
   if (!root || !menu || !context) return false;
-  if (root.hasAttribute(MARKER)) return true;
+  if (menu.querySelector('#file-menu-local-open') && context.querySelector('#panel-local-recent')) return true;
+
+  menuCleanups.get(menu)?.();
+
+  // Either half of the vendor view may have been replaced independently.
+  menu.querySelectorAll('.local-file-menu-item, .local-file-menu-divider').forEach((node) => node.remove());
+  context.querySelector('#panel-local-recent')?.remove();
 
   installStyles(doc);
   const create = menuItem(doc, 'file-menu-local-new', t('editorNewDocument'), 'new');
   const open = menuItem(doc, 'file-menu-local-open', t('historyOpenFile'), 'open');
+  const saveToComputer = menuItem(doc, 'file-menu-local-save-computer', t('editorSaveToComputer'), 'open');
   const recent = menuItem(doc, 'file-menu-local-recent', t('editorRecentFiles'), 'recent');
   const divider = doc.createElement('li');
   divider.className = 'devider devider-small local-file-menu-divider';
   divider.setAttribute('aria-hidden', 'true');
 
   const firstDivider = menu.querySelector('li.devider');
-  if (firstDivider) firstDivider.after(create, open, recent, divider);
-  else menu.prepend(create, open, recent, divider);
+  if (firstDivider) firstDivider.after(create, open, recent, saveToComputer, divider);
+  else menu.prepend(create, open, recent, saveToComputer, divider);
 
   const panel = doc.createElement('div');
   panel.id = 'panel-local-recent';
@@ -178,6 +195,20 @@ export function installLocalFileMenu(win: Window): boolean {
     event.preventDefault();
     host.__createNewDocument?.(newDocumentType());
   });
+  saveToComputer.addEventListener('click', (event) => {
+    event.preventDefault();
+    const frame = win as Window & {
+      Asc?: {
+        editor?: { documentFormatSave?: number; asc_DownloadAs?: (options: unknown) => void };
+        asc_CDownloadOptions?: new (format: number) => unknown;
+      };
+    };
+    const api = frame.Asc?.editor;
+    const Options = frame.Asc?.asc_CDownloadOptions;
+    if (api && Options && typeof api.documentFormatSave === 'number') {
+      api.asc_DownloadAs?.(new Options(api.documentFormatSave));
+    }
+  });
   open.addEventListener('click', (event) => {
     event.preventDefault();
     host.__openLocalDocument?.();
@@ -186,15 +217,12 @@ export function installLocalFileMenu(win: Window): boolean {
     event.preventDefault();
     void showRecent();
   });
-  menu.addEventListener(
-    'click',
-    (event) => {
-      const item = (event.target as Element | null)?.closest('li.fm-btn');
-      if (item && item !== recent && item !== open && item !== create) hideCustomPanel();
-    },
-    true,
-  );
+  const onMenuClick = (event: Event): void => {
+    const item = (event.target as Element | null)?.closest('li.fm-btn');
+    if (item && item !== recent && item !== open && item !== create) hideCustomPanel();
+  };
+  menu.addEventListener('click', onMenuClick, true);
+  menuCleanups.set(menu, () => menu.removeEventListener('click', onMenuClick, true));
 
-  root.setAttribute(MARKER, '');
   return true;
 }

@@ -440,6 +440,8 @@ export interface I18nMessages {
   historyDownloadFailed: string;
   /** Toolbar filter: only the documents that were never exported to disk. */
   historyOnlyUnsaved: string;
+  editorSaveToComputer: string;
+  editorSavedInBrowser: string;
   historyOpenFile: string;
   editorNewDocument: string;
   editorRecentFiles: string;

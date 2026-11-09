@@ -469,6 +469,8 @@ export const de: Partial<I18nMessages> = {
   historyDownload: 'Herunterladen',
   historyDownloadFailed: 'Diese Kopie konnte nicht auf der Festplatte gespeichert werden.',
   historyOnlyUnsaved: 'Nicht exportiert',
+  editorSaveToComputer: 'Save to computer',
+  editorSavedInBrowser: 'Saved in this browser',
   historyOpenFile: 'Datei öffnen',
   editorNewDocument: 'Neues Dokument erstellen',
   editorRecentFiles: 'Zuletzt verwendet',

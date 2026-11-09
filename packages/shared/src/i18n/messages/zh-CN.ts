@@ -422,6 +422,8 @@ export const zhCN: I18nMessages = {
   historyDownload: '下载副本',
   historyDownloadFailed: '这份副本没能保存到磁盘。',
   historyOnlyUnsaved: '只看未导出',
+  editorSaveToComputer: '保存到本机',
+  editorSavedInBrowser: '已保存到浏览器',
   historyOpenFile: '打开文件',
   editorNewDocument: '创建一个新文档',
   editorRecentFiles: '最近打开',
