@@ -46,6 +46,10 @@ export const appEntity = (extra = {}) => ({
   '@type': 'WebApplication',
   '@id': ID.app,
   name: SITE_NAME,
+  // Names used by the OpenUse directory for the Word, spreadsheet and
+  // presentation entry points. Keeping them on the same entity helps search
+  // engines and answer engines connect the three product pages to this editor.
+  alternateName: ['Quire Online Word', 'Ledger Online Excel', 'Lectern Online PowerPoint'],
   url: ORIGIN + '/',
   applicationCategory: 'BusinessApplication',
   operatingSystem: 'Any (web browser)',
@@ -54,7 +58,12 @@ export const appEntity = (extra = {}) => ({
   inLanguage: Object.keys(LOCALES),
   offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
   // The repository is the editor's other public identity, not the org's.
-  sameAs: [REPO],
+  sameAs: [
+    REPO,
+    'https://whogogo.com/tool/quire',
+    'https://whogogo.com/tool/ledger',
+    'https://whogogo.com/tool/lectern',
+  ],
   isPartOf: { '@id': ID.site },
   ...extra,
 });
