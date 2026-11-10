@@ -1,4 +1,11 @@
+import { getLanguage } from '@ranuts/shared/i18n';
 import { isDocumentContentReady } from './onlyoffice/open-state';
+
+declare global {
+  interface Window {
+    OpenUseLoadingI18n?: { apply(mask: HTMLElement | null, language?: string, slow?: boolean): void };
+  }
+}
 
 const LOADING_ID = 'openuse-loading';
 let activeMask: HTMLElement | null = null;
@@ -34,13 +41,11 @@ export const showLoading = (): { removeLoading: (force?: boolean) => void } => {
   activeUsers += 1;
   window.clearTimeout(removalTimer);
   mask.classList.remove('is-hidden');
+  window.OpenUseLoadingI18n?.apply(mask, getLanguage());
 
-  const message = mask.querySelector<HTMLElement>('.loading-message');
-  const hint = mask.querySelector<HTMLElement>('.loading-hint');
   const slowTimer = window.setTimeout(() => {
     if (!mask.isConnected) return;
-    if (message) message.textContent = '还在努力加载中…';
-    if (hint) hint.textContent = '网络较慢时可能需要多一点时间';
+    window.OpenUseLoadingI18n?.apply(mask, getLanguage(), true);
   }, 30_000);
 
   let released = false;

@@ -75,6 +75,9 @@
     <!-- ranui design-token layer (vendored from ranui/dist/ranui.css, re-synced by bin/build.sh).
          Loaded before home.css so the landing hero's --ran-* tokens resolve on first paint. -->
     <script src="/theme-presentation.js"></script>
+    <script src="/ranui-iife/theme-switch.iife.js" defer></script>
+    <script src="/vendor/openuse/1.0.0/openuse.js?ui=outside-collapse" defer></script>
+    <script src="/openuse-toolbar.js?ui=center-position" defer></script>
     <link rel="stylesheet" href="/ran-fonts/fonts.css" />
     <link rel="stylesheet" href="/ran-tokens.css" />
     <link rel="stylesheet" href="/app-tokens.css" />
@@ -106,6 +109,7 @@
         visibility: hidden;
         pointer-events: none;
       }
+      #openuse-loading:not([lang]) .loading-content { visibility: hidden; }
       #openuse-loading .loading-content {
         width: 100%;
         max-width: 420px;
@@ -221,6 +225,7 @@
         >
       </div>
     </div>
+    <script src="/loading-i18n.js"></script>
     <div id="app">
       <div id="iframe"></div>
     </div>

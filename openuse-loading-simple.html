@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>OpenUse · 加载中</title>
     <style>
+      #openuse-loading:not([lang]) .loading-content { visibility: hidden; }
       :root {
         color-scheme: light;
         --blue: #3478f6;
@@ -127,6 +128,7 @@
         >
       </div>
     </div>
+    <script src="/loading-i18n.js"></script>
     <script>
       (function () {
         const overlay = document.getElementById('openuse-loading');
@@ -134,8 +136,7 @@
         const hint = document.getElementById('openuse-hint');
         const timer = setTimeout(() => {
           if (!overlay.classList.contains('is-hidden')) {
-            message.textContent = '还在努力加载中…';
-            hint.textContent = '网络较慢时可能需要多一点时间';
+            window.OpenUseLoadingI18n.apply(overlay, undefined, true);
           }
         }, 30000);
         window.OpenUseLoading = {

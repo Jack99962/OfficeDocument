@@ -32,6 +32,10 @@ const ASSETS_TO_CACHE = [
   './editor.html',
   './manifest.json',
   './theme-presentation.js',
+  './loading-i18n.js',
+  './openuse-toolbar.js?ui=center-position',
+  './vendor/openuse/1.0.0/openuse.js?ui=outside-collapse',
+  './ranui-iife/theme-switch.iife.js',
   // CSV and HTML-table opens convert through these. Not vendor assets, so the
   // runtime cache's activation prune would drop them; core keeps them offline.
   './libs/sheetjs/convert.worker.js',
@@ -71,7 +75,7 @@ const EDITOR_BOOTSTRAP_HTML = [
 // its content changed.) Network-first with `cache: 'no-cache'` is what the HTML branch already
 // does, for exactly the same reason.
 const DEPLOY_COUPLED =
-  /^\/(?:home|landing|app-tokens)\.css$|^\/(?:lang-switch|sw-register|open-local|landing-prefetch|history-recent|theme-presentation)\.js$|^\/ranui-iife\/|^\/libs\/sheetjs\/convert\.worker\.js$/;
+  /^\/(?:home|landing|app-tokens)\.css$|^\/(?:lang-switch|sw-register|open-local|landing-prefetch|history-recent|theme-presentation|openuse-toolbar)\.js$|^\/ranui-iife\/|^\/libs\/sheetjs\/convert\.worker\.js$/;
 
 // The OnlyOffice 9 tree is ~2600 files, but most of that is per-locale help
 // and on-demand font duplication a single session in one language never

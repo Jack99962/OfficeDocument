@@ -1,3 +1,4 @@
+import { changeDocumentLanguage } from './lib/document-language';
 import { getAppWorkerScriptURL } from './lib/offline-worker-control';
 import {
   documentIsExpected,
@@ -32,6 +33,7 @@ import './styles/base.css';
 
 declare global {
   interface Window {
+    __changeDocumentLanguage: (language: string) => Promise<void>;
     onCreateNew: (ext: string) => Promise<void>;
     onOpenDocument: () => void;
     __createNewDocument?: (type: 'docx' | 'xlsx' | 'pptx') => void;
@@ -99,6 +101,8 @@ setUICallbacks({
 setEventUICallbacks({
   hideControlPanel,
 });
+
+window.__changeDocumentLanguage = changeDocumentLanguage;
 
 // Export onCreateNew to window
 window.onCreateNew = onCreateNew;
